@@ -1,0 +1,30 @@
+{
+    "nav": {
+        "notes": "Notatki",
+        "labels": "Etykiety",
+        "archive": "Archiwum",
+        "trash": "Kosz",
+        "settings": "Ustawienia",
+        "darkmode": "Ciemny motyw"
+    },
+    "toolbar": {
+        "tooltip": {
+            "back": "Wróć",
+            "archive": "Przenieś do archiwum",
+            "unarchive": "Przywróć z archiwum",
+            "delete": "Usuń",
+            "selectall": "Zaznacz wszystkie",
+            "deselectall": "Odznacz wszystkie"
+        }
+    },
+    "snack": {
+        "archive": {
+            "success": "Pomyślnie zarchiwizowano notatkę.",
+            "error": "Błąd."
+        },
+        "delete": {
+            "success": "Pomyślnie usunięto notatkę.",
+            "error": "Błąd."
+        }
+    }
+}

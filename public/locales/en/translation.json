@@ -1,0 +1,32 @@
+{
+    "nav": {
+        "notes": "Notes",
+        "labels": "Labels",
+        "archive": "Archive",
+        "trash": "Trash",
+        "settings": "Settings",
+        "darkmode": "Dark mode"
+    },
+    "toolbar": {
+        "tooltip": {
+            "back": "Go back",
+            "archive": "Archive",
+            "unarchive": "Unarchive",
+            "delete": "Delete",
+            "selectall": "Select all",
+            "deselectall": "Deselect all"
+        }
+    },
+    "snack": {
+        "undo": "Undo",
+        "undone": "Action undone",
+        "archive": {
+            "success": "Note archived",
+            "error": "Something went wrong"
+        },
+        "delete": {
+            "success": "Note deleted",
+            "error": "Something went wrong"
+        }
+    }
+}

@@ -1,12 +1,50 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import NotesPage from './routes/NotesPage';
+import ArchivePage from './routes/ArchivePage';
+import TrashPage from './routes/TrashPage';
+import SettingsPage from './routes/SettingsPage';
+import { CssBaseline } from '@mui/material';
+import { Provider } from 'react-redux';
+
+import './i18n';
+import store from './store'
+import NoteDetailsPage from './routes/NoteDetailsPage';
+import { NotesThemeProvider } from './context/ThemeContext';
+import CustomSnackbarProvider from './snackbars/CustomSnackbarProvider';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <NotesThemeProvider>
+        <CssBaseline />
+
+        <CustomSnackbarProvider>
+
+          <BrowserRouter>
+            {/* TODO: Better loading fallback */}
+            <Suspense fallback={<h3>Loading</h3>}>
+              <Routes>
+
+                <Route path="/" element={<App />}>
+                  <Route path="" element={<NotesPage />} />
+                  <Route path="/notes" element={<NotesPage />} />
+                  <Route path="/notes/:noteId" element={<NoteDetailsPage />} />
+                  <Route path="archive" element={<ArchivePage />} />
+                  <Route path="trash" element={<TrashPage />} />
+                  <Route path="settings" element={<SettingsPage />} />
+                </Route>
+
+              </Routes>
+            </Suspense>
+
+          </BrowserRouter>
+        </CustomSnackbarProvider>
+      </NotesThemeProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
