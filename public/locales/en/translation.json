@@ -18,10 +18,12 @@
         }
     },
     "snack": {
-        "undo": "Undo",
-        "undone": "Action undone",
         "archive": {
             "success": "Note archived",
+            "error": "Something went wrong"
+        },
+        "unarchive": {
+            "success": "Note unarchived",
             "error": "Something went wrong"
         },
         "delete": {

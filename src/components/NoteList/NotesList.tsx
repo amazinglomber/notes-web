@@ -43,7 +43,7 @@ const NotesList: React.FC<NotesListProps> = ({ notes }) => {
     <List>
       {notes.map((note) => (
         <ListItem
-          key={`note-list-item-${note.id}`}
+          key={`${note.isArchived ? 'archived-' : ''}note-list-item-${note.id}`}
           disablePadding
         >
           <ListItemIcon>

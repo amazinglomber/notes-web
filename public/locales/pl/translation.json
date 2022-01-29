@@ -19,12 +19,16 @@
     },
     "snack": {
         "archive": {
-            "success": "Pomyślnie zarchiwizowano notatkę.",
-            "error": "Błąd."
+            "success": "Zarchiwizowano notatkę",
+            "error": "Błąd"
+        },
+        "unarchive": {
+            "success": "Przywrócono z archiwum",
+            "error": "Błąd"
         },
         "delete": {
-            "success": "Pomyślnie usunięto notatkę.",
-            "error": "Błąd."
+            "success": "Usunięto notatkę",
+            "error": "Błąd"
         }
     }
 }

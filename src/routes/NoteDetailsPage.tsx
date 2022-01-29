@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Chip, Container, IconButton, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
+import { Container, IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { getNoteById } from '../store/selectors';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch } from '../store/hooks';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import UnarchiveIcon from '@mui/icons-material/Unarchive';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { switchArchiveNote, removeNote } from '../store/reducers/notesReducer';
 import { useTranslation } from 'react-i18next';
 import api from '../api';
-import { SnackbarKey, useSnackbar } from 'notistack';
-import ActionDismiss from '../snackbars/ActionDismiss';
+import { useSnackbar } from 'notistack';
 
 const NoteDetailsPage = () => {
   const { noteId } = useParams();
@@ -24,7 +21,7 @@ const NoteDetailsPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const getNote = async () => {
     setLoading(true);
@@ -58,6 +55,22 @@ const NoteDetailsPage = () => {
     }
   };
 
+  const unArchiveNote = async () => {
+    try {
+      const response = await api.post(`/Notes/${noteId}/UnArchive`);
+
+      if (response.status === 204) {
+        enqueueSnackbar(t('snack.unarchive.success'));
+        navigate(-1);
+      }
+    } catch (e) {
+      enqueueSnackbar(t('snack.unarchive.error'), {
+        variant: 'error',
+        preventDuplicate: true
+      });
+    }
+  };
+
   const deleteNote = async () => {
     try {
       const response = await api.delete(`/Notes/${noteId}`);
@@ -75,18 +88,11 @@ const NoteDetailsPage = () => {
     navigate(-1);
   };
 
-  // TODO: Add snackbar message
   const onArchiveClicked = () => archiveNote();
 
-  // TODO: Add confirmation dialog and snackbar message
-  const onRemoveClicked = () => deleteNote();
+  const onUnArchiveClicked = () => unArchiveNote();
 
-  // If note is not found, redirect user to notes page
-  // if (!note) {
-  //   return (
-  //     <Navigate to="/notes" replace />
-  //   );
-  // }
+  const onRemoveClicked = () => deleteNote();
 
   return (
     <div>
@@ -110,7 +116,7 @@ const NoteDetailsPage = () => {
               </Tooltip>
             ) : (
               <Tooltip title={t('toolbar.tooltip.unarchive') as string}>
-                <IconButton onClick={onArchiveClicked}>
+                <IconButton onClick={onUnArchiveClicked}>
                   <UnarchiveIcon />
                 </IconButton>
               </Tooltip>
