@@ -12,6 +12,7 @@ import { useSnackbar } from 'notistack';
 import NoteTitleField from '../components/NoteTitleField';
 import NoteBodyField from '../components/NoteBodyField';
 import NoteDetails from '../components/NoteDetails';
+import ConfirmationDialog from '../components/ConfirmationDialog/ConfirmationDialog';
 
 const NoteDetailsPage = () => {
   const { noteId } = useParams();
@@ -22,6 +23,8 @@ const NoteDetailsPage = () => {
   const [note, setNote] = useState<INote | undefined>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -94,7 +97,16 @@ const NoteDetailsPage = () => {
 
   const onUnArchiveClicked = () => unArchiveNote();
 
-  const onRemoveClicked = () => deleteNote();
+  const onRemoveClicked = () => {
+    setConfirmationOpen(true);
+  };
+
+  const handleOnConfirm = () => {
+    deleteNote();
+    setConfirmationOpen(false);
+  };
+
+  const handleOnClose = () => setConfirmationOpen(false);
 
   const renderToolbar = () => (
     <Toolbar>
@@ -144,6 +156,14 @@ const NoteDetailsPage = () => {
           <NoteDetails note={note!} />
         )}
       </Container>
+
+      <ConfirmationDialog
+        title={t('dialog.note.delete.title')}
+        description={t('dialog.note.delete.description')}
+        open={confirmationOpen}
+        onConfirm={handleOnConfirm}
+        onCancel={handleOnClose}
+      />
     </div>
   )
 }

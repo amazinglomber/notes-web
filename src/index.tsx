@@ -42,6 +42,7 @@ ReactDOM.render(
             </Suspense>
 
           </BrowserRouter>
+
         </CustomSnackbarProvider>
       </NotesThemeProvider>
     </Provider>

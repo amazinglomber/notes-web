@@ -38,5 +38,15 @@
                 "body": "Notatka"
             }
         }
+    },
+    "dialog": {
+        "confirm": "Ok",
+        "cancel": "Anuluj",
+        "note": {
+            "delete": {
+                "title": "Usunąć notatkę?",
+                "description": "Czy jesteś pewien, że chcesz usunąć notatkę? Tej operacji nie da się odwrócić."
+            }
+        }
     }
 }

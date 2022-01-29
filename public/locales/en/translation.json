@@ -41,5 +41,15 @@
                 "body": "Note"
             }
         }
+    },
+    "dialog": {
+        "confirm": "Ok",
+        "cancel": "Cancel",
+        "note": {
+            "delete": {
+                "title": "Delete note?",
+                "description": "Are you sure you want to delete note? This action cannot be undone."
+            }
+        }
     }
 }
