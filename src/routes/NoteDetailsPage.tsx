@@ -9,11 +9,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useTranslation } from 'react-i18next';
 import api from '../api';
 import { useSnackbar } from 'notistack';
+import NoteTitleField from '../components/NoteTitleField';
+import NoteBodyField from '../components/NoteBodyField';
+import NoteDetails from '../components/NoteDetails';
 
 const NoteDetailsPage = () => {
   const { noteId } = useParams();
 
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -94,57 +96,52 @@ const NoteDetailsPage = () => {
 
   const onRemoveClicked = () => deleteNote();
 
+  const renderToolbar = () => (
+    <Toolbar>
+      <Tooltip title={t('toolbar.tooltip.back') as string}>
+        <IconButton
+          color="inherit"
+          onClick={handleBackClick}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Tooltip>
+
+      {!!note && (
+        <>
+          {!note.isArchived ? (
+            <Tooltip title={t('toolbar.tooltip.archive') as string}>
+              <IconButton onClick={onArchiveClicked}>
+                <ArchiveIcon/>
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <Tooltip title={t('toolbar.tooltip.unarchive') as string}>
+              <IconButton onClick={onUnArchiveClicked}>
+                <UnarchiveIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+        </>
+      )}
+
+      <Tooltip title={t('toolbar.tooltip.delete') as string}>
+        <IconButton onClick={onRemoveClicked}>
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
+    </Toolbar>
+  );
+
   return (
     <div>
-      <Toolbar>
-        <Tooltip title={t('toolbar.tooltip.back') as string}>
-          <IconButton
-            color="inherit"
-            onClick={handleBackClick}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-        </Tooltip>
-
-        {!!note && (
-          <>
-            {!note.isArchived ? (
-              <Tooltip title={t('toolbar.tooltip.archive') as string}>
-                <IconButton onClick={onArchiveClicked}>
-                  <ArchiveIcon/>
-                </IconButton>
-              </Tooltip>
-            ) : (
-              <Tooltip title={t('toolbar.tooltip.unarchive') as string}>
-                <IconButton onClick={onUnArchiveClicked}>
-                  <UnarchiveIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-          </>
-        )}
-
-        <Tooltip title={t('toolbar.tooltip.delete') as string}>
-          <IconButton onClick={onRemoveClicked}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      </Toolbar>
+      {renderToolbar()}
 
       <Container component="main">
         {loading && <h3>loading</h3>}
         {error && <h3>Error</h3>}
         {!!note && (
-          <>
-            <Typography variant="h4" gutterBottom>{note!.title}</Typography>
-            <Typography variant="body1">{note!.body}</Typography>
-            <br />
-            {/*<Stack direction="row" spacing={1}>*/}
-            {/*  {note!.labels.map((label) => (*/}
-            {/*    <Chip key={`label-${label}`} label={label} />*/}
-            {/*  ))}*/}
-            {/*</Stack>*/}
-          </>
+          <NoteDetails note={note!} />
         )}
       </Container>
     </div>

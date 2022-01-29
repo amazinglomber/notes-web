@@ -29,6 +29,17 @@
         "delete": {
             "success": "Note deleted",
             "error": "Something went wrong"
+        },
+        "update": {
+            "error": "Something went wrong"
+        }
+    },
+    "form": {
+        "note": {
+            "placeholder": {
+                "title": "Title",
+                "body": "Note"
+            }
         }
     }
 }

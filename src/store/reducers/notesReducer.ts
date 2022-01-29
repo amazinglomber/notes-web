@@ -37,11 +37,11 @@ const notesSlice = createSlice({
       state.selectedNotesIds = [];
     },
     removeNote(state, action: PayloadAction<INote['id'] | INote['id'][]>) {
-      if (Array.isArray(action.payload)) {
-        state.notes = state.notes.filter((note) => !action.payload.includes(note.id));
-      } else {
-        state.notes = state.notes.filter((note) => note.id !== action.payload);
-      }
+      // if (Array.isArray(action.payload)) {
+      //   state.notes = state.notes.filter((note) => !action.payload.includes(note.id));
+      // } else {
+      //   state.notes = state.notes.filter((note) => note.id !== action.payload);
+      // }
     },
     removeSelectedNotes(state) {
       state.notes = state.notes.filter((note) => !state.selectedNotesIds.includes(note.id))

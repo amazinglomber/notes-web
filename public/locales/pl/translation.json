@@ -30,5 +30,13 @@
             "success": "Usunięto notatkę",
             "error": "Błąd"
         }
+    },
+    "form": {
+        "note": {
+            "placeholder": {
+                "title": "Tytuł",
+                "body": "Notatka"
+            }
+        }
     }
 }

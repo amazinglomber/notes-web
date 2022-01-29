@@ -9,7 +9,7 @@ interface ICreateLabel {
 }
 
 interface INote {
-  id: string;
+  id: number;
   title: string;
   body: string;
   isArchived: boolean;
@@ -20,12 +20,19 @@ interface INote {
 }
 
 interface ICreateNote {
-  title: string;
-  body: string;
+  title?: string;
+  body?: string;
   /**
    * Labels ids.
    */
-  labels: ILabel['id'][];
+  // labels: ILabel['id'][];
+}
+
+interface IUpdateNote {
+  id: number;
+  title?: string;
+  body?: string;
+  isArchived?: boolean;
 }
 
 interface IGetNotesResponse {
