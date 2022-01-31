@@ -26,6 +26,8 @@ import { selectNavigationDrawerOpened } from '../../store/selectors';
 import { appSlice } from '../../store/reducers/appReducer';
 import useMatchesDesktop from '../../hooks/useMatchesDesktop';
 import { NavBarOffset } from '../NavBar/NavBar';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export const drawerWidth = 280;
 
@@ -40,7 +42,7 @@ const routes: IRoute[] = [
   {
     name: 'nav.notes',
     icon: <DescriptionIcon />,
-    to: '/',
+    to: '/app/notes',
     divider: true,
   },
   // {
@@ -51,17 +53,17 @@ const routes: IRoute[] = [
   {
     name: 'nav.archive',
     icon: <Archive />,
-    to: '/archive',
+    to: '/app/archive',
   },
   {
     name: 'nav.trash',
     icon: <Delete />,
-    to: 'trash',
+    to: '/app/trash',
   },
   {
     name: 'nav.settings',
     icon: <Settings />,
-    to: '/settings',
+    to: '/app/settings',
   },
 ];
 
@@ -81,6 +83,8 @@ const NavigationDrawer = () => {
 
   const matchesDesktop = useMatchesDesktop();
 
+  const { logout } = useAuth0();
+
   const handleAddNoteClicked = () => {
     setDialogOpen(true);
   };
@@ -93,6 +97,10 @@ const NavigationDrawer = () => {
     navigate(route.to);
     handleDrawerClose();
     dispatch(appSlice.actions.setNavBarTitle(route.name));
+  };
+
+  const handleLogoutClicked = () => {
+    logout({ returnTo: window.location.origin });
   };
 
   return (
@@ -164,6 +172,22 @@ const NavigationDrawer = () => {
                 i18n.changeLanguage(newLang);
               }}
             />
+          </ListItem>
+        </List>
+
+        <div style={{ display: 'flex', flex: 1 }} />
+
+        <List>
+          <ListItem
+            button
+            onClick={handleLogoutClicked}
+          >
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText>
+              {t('nav.logout')}
+            </ListItemText>
           </ListItem>
         </List>
       </Drawer>

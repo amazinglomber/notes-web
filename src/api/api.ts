@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+import { RootState } from '../store/hooks';
 
 const baseUrl = process.env.NODE_ENV === 'production'
   ? 'https://api.notes.niezurawski.com/api'
@@ -9,7 +10,18 @@ type TagType = 'Notes';
 export const notesApi = createApi({
   reducerPath: 'notesApi',
   tagTypes: ['Notes'] as TagType[],
-  baseQuery: fetchBaseQuery({ baseUrl }),
+  baseQuery: fetchBaseQuery({
+    baseUrl,
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).app.authToken;
+
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`)
+      }
+
+      return headers;
+    }
+  }),
   endpoints: (builder) => ({
     getNotes: builder.query<IGetNotesResponse, { page: number, archive: boolean}>({
       query: ({ page = 1, archive = false }) => `/Notes?Page=${page}&IsArchived=${archive}`,

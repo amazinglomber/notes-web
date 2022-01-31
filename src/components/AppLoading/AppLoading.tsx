@@ -11,7 +11,6 @@ const AppLoading: React.FC<AppLoadingProps> = () => {
       style={{
         height: '100%',
         display: 'flex',
-        // flexGrow: 1,
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',

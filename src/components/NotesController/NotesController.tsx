@@ -19,7 +19,6 @@ const NotesController: React.FC<NotesControllerProps> = ({ archive = false, }) =
   });
 
   useEffect(() => {
-    console.log(page, data, isLoading);
   }, [page, isLoading]);
 
   const loadMoreNotes = () => {

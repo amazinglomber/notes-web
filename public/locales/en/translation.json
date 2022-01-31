@@ -6,7 +6,8 @@
         "archive": "Archive",
         "trash": "Trash",
         "settings": "Settings",
-        "darkmode": "Dark mode"
+        "darkmode": "Dark mode",
+        "logout": "Log out"
     },
     "tooltip": {
         "back": "Go back",

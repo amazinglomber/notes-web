@@ -20,7 +20,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {
   useAddNoteMutation,
   useArchiveNoteMutation,
-  useGetNoteByIdQuery,
   useRemoveNoteMutation, useUnArchiveNoteMutation,
   useUpdateNoteMutation
 } from '../../api/api';
@@ -30,7 +29,7 @@ export interface NoteFormDialogProps extends DialogProps {
   note? :INote;
 }
 
-const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, onClose, ...props }) => {
+const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ...props }) => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -61,11 +60,9 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, onClose, ...props
 
   useEffect(() => {
     setNoteId(note?.id);
-  }, []);
+  }, [open]);
 
   const handleDebounceChange = (createNote: ICreateNote) => {
-    console.log('debounces', createNote);
-
     if (!noteId) {
       addNote(createNote)
         .unwrap()
@@ -73,7 +70,7 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, onClose, ...props
           setNoteId(note.id);
         })
         .catch((rejected) => {
-          enqueueSnackbar(t('snack.note.create.error'), {
+          enqueueSnackbar(t('snack.create.error'), {
             preventDuplicate: true,
           });
         });
@@ -85,14 +82,14 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, onClose, ...props
         .unwrap()
         .then((_) => {})
         .catch((rejected) => {
-          enqueueSnackbar(t('snack.note.update.error'), {
+          enqueueSnackbar(t('snack.update.error'), {
             preventDuplicate: true,
           });
         });
     }
   }
 
-  const debounceChange = useCallback(debounce(handleDebounceChange, 700), [noteId]);
+  const debounceChange = useCallback(debounce(handleDebounceChange, 300), [noteId]);
 
   const handleOnNoteChange = (createNote: ICreateNote) => {
     console.log('handleNoteChange', createNote);
@@ -211,6 +208,7 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, onClose, ...props
       fullWidth
       fullScreen={!matchesDesktop}
       onClose={onClose}
+      open={open}
       {...props}
     >
       {renderAppBarOnMobile()}

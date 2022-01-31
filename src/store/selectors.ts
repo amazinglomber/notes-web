@@ -5,3 +5,6 @@ export const selectNavigationDrawerOpened = (state: RootState) =>
 
 export const selectNavBarTitle = (state: RootState) =>
   state.app.navBarTitle;
+
+export const selectAuthToken = (state: RootState) =>
+  state.app.authToken;

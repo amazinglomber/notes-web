@@ -6,7 +6,8 @@
         "archive": "Archiwum",
         "trash": "Kosz",
         "settings": "Ustawienia",
-        "darkmode": "Ciemny motyw"
+        "darkmode": "Ciemny motyw",
+        "logout": "Wyloguj"
     },
     "tooltip": {
         "back": "Wróć",
