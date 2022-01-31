@@ -12,7 +12,6 @@ import { Provider } from 'react-redux';
 
 import './i18n';
 import store from './store'
-import NoteDetailsPage from './routes/NoteDetailsPage';
 import { NotesThemeProvider } from './context/ThemeContext';
 import CustomSnackbarProvider from './snackbars/CustomSnackbarProvider';
 
@@ -32,7 +31,8 @@ ReactDOM.render(
                 <Route path="/" element={<App />}>
                   <Route path="" element={<NotesPage />} />
                   <Route path="/notes" element={<NotesPage />} />
-                  <Route path="/notes/:noteId" element={<NoteDetailsPage />} />
+                  {/*<Route path="/notes/add" element={<AddNotePage />} />*/}
+                  {/*<Route path="/notes/:noteId" element={<NoteDetailsPage />} />*/}
                   <Route path="archive" element={<ArchivePage />} />
                   <Route path="trash" element={<TrashPage />} />
                   <Route path="settings" element={<SettingsPage />} />

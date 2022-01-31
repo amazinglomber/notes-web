@@ -1,5 +1,6 @@
 {
     "nav": {
+        "addnote": "Dodaj notatkę",
         "notes": "Notatki",
         "labels": "Etykiety",
         "archive": "Archiwum",
@@ -42,6 +43,7 @@
     "dialog": {
         "confirm": "Ok",
         "cancel": "Anuluj",
+        "close": "Zamknij",
         "note": {
             "delete": {
                 "title": "Usunąć notatkę?",

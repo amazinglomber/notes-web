@@ -14,8 +14,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { deselectNote, fetchNotes, selectNote } from '../../store/reducers/notesReducer';
 import { getAllNotes, getNotesStatus, getSelectedNotesIds } from '../../store/selectors';
-import NoteCard from '../NoteCard/NoteCard';
+import NoteCard from './NoteCard';
 import { useNavigate } from 'react-router-dom';
+import NoteListItem from './NoteListItem';
 
 interface NotesListProps {
   notes: INote[];
@@ -35,27 +36,13 @@ const NotesList: React.FC<NotesListProps> = ({ notes }) => {
     }
   }
 
-  const handleOnNoteClick = (id: INote['id']) => () => {
-    navigate(`/notes/${id}`);
-  }
-
   return (
     <List>
       {notes.map((note) => (
-        <ListItem
+        <NoteListItem
           key={`${note.isArchived ? 'archived-' : ''}note-list-item-${note.id}`}
-          disablePadding
-        >
-          <ListItemIcon>
-            <Checkbox
-              checked={selectedNotesIds.includes(note.id)}
-              onChange={handleOnNoteCheck(note.id)}
-            />
-          </ListItemIcon>
-          <ListItemButton onClick={handleOnNoteClick(note.id)}>
-            <ListItemText primary={note.title} secondary={note.body.substring(0, 100) + '...'} />
-          </ListItemButton>
-        </ListItem>
+          note={note}
+        />
       ))}
     </List>
   );

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Container, Divider, Toolbar } from '@mui/material';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Loading from '../Loading';
-import NotesList from '../NoteList/NotesList';
+import NotesList from '../Note/NotesList';
 
 export interface NotesControllerProps {
   archive?: boolean;

@@ -1,20 +1,15 @@
-import { Archive, Delete, Notes, Settings } from '@mui/icons-material';
-import { Button, Drawer, List, ListItem, ListItemIcon, ListItemText, styled, Switch } from '@mui/material';
-import MuiDrawer from '@mui/material/Drawer';
-import React, { useContext, useState } from 'react';
+import { Archive, Notes, Settings } from '@mui/icons-material';
+import { Button, Drawer, List, ListItem, ListItemIcon, ListItemText, Switch } from '@mui/material';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router-dom';
-import { addNote } from '../../store/reducers/notesReducer';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { nanoid } from '@reduxjs/toolkit';
-import { useAppDispatch } from '../../store/hooks';
-import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import ThemeContext from '../../context/ThemeContext';
 import useTheme from '../../context/themeHooks';
-import LabelIcon from '@mui/icons-material/Label';
 import i18n from '../../i18n';
+import NoteFormDialog from '../Dialogs/NoteFormDialog';
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 interface IRoute {
   name: string;
@@ -28,11 +23,11 @@ const routes: IRoute[] = [
     icon: <Notes />,
     to: '/',
   },
-  {
-    name: 'nav.labels',
-    icon: <LabelIcon />,
-    to: '/labels',
-  },
+  // {
+  //   name: 'nav.labels',
+  //   icon: <LabelIcon />,
+  //   to: '/labels',
+  // },
   {
     name: 'nav.archive',
     icon: <Archive />,
@@ -52,12 +47,13 @@ const routes: IRoute[] = [
 
 const NavigationDrawer = () => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const dispatch = useAppDispatch();
   const { mode, toggleDark } = useTheme();
+
+  const navigate = useNavigate();
 
   // temporary
   const [lang, setLang] = useState('en');
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const fetchPost = (): Promise<INote> => {
     return fetch('https://jsonplaceholder.typicode.com/posts')
@@ -74,6 +70,10 @@ const NavigationDrawer = () => {
       .catch((e) => e);
   }
 
+  const onAddNoteClicked = () => {
+    setDialogOpen(true);
+  };
+
   return (
     <div>
         <Drawer
@@ -85,13 +85,13 @@ const NavigationDrawer = () => {
         >
           {/* Add note button */}
           <Button
-            variant="outlined"
-            onClick={async () => {
-              const note = await fetchPost();
-              dispatch(addNote(note));
+            variant="contained"
+            style={{
+              margin: 16
             }}
+            onClick={onAddNoteClicked}
           >
-            Add note
+            {t('nav.addnote')}
           </Button>
 
           <List sx={{ width: drawerWidth }}>
@@ -136,6 +136,11 @@ const NavigationDrawer = () => {
             </ListItem>
           </List>
         </Drawer>
+
+      <NoteFormDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+      />
     </div>
   );
 };
