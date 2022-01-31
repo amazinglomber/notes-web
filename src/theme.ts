@@ -15,15 +15,15 @@ const theme = (mode: 'light' | 'dark'): ThemeOptions => createTheme(
     //   borderRadius: 0,
     // },
     components: {
-      MuiCard: {
-        styleOverrides: {
-          root: {
-            border: '3px solid black',
-            // borderRadius: '12px',
-            boxShadow: 'none'
-          }
-        }
-      }
+      // MuiCard: {
+      //   styleOverrides: {
+      //     root: {
+      //       border: '3px solid black',
+      //       // borderRadius: '12px',
+      //       boxShadow: 'none'
+      //     }
+      //   }
+      // }
     }
   }
 );

@@ -11,7 +11,7 @@ function App() {
     <Box sx={{ display: 'flex' }}>
       <NavBar />
       <NavigationDrawer />
-      <div>
+      <div style={{ width: '100%' }}>
         <NavBarOffset />
         <Outlet />
       </div>

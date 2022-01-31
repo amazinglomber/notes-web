@@ -6,16 +6,24 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogProps, Toolbar,
-  useMediaQuery
+  DialogProps, IconButton, Toolbar, Tooltip,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import api from '../../api';
 import { useSnackbar } from 'notistack';
 import NoteForm from '../Note/NoteForm';
 import useNotesTheme from '../../context/themeHooks';
 import BackButton from '../BackButton';
 import useMatchesDesktop from '../../hooks/useMatchesDesktop';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import UnarchiveIcon from '@mui/icons-material/Unarchive';
+import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  useAddNoteMutation,
+  useArchiveNoteMutation,
+  useGetNoteByIdQuery,
+  useRemoveNoteMutation, useUnArchiveNoteMutation,
+  useUpdateNoteMutation
+} from '../../api/api';
 
 export interface NoteFormDialogProps extends DialogProps {
   onClose: () => void;
@@ -31,47 +39,56 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, onClose, ...props
   const { theme } = useNotesTheme();
   const matchesDesktop = useMatchesDesktop();
 
+  const [
+    addNote,
+  ] = useAddNoteMutation();
+
+  const [
+    updateNote,
+  ] = useUpdateNoteMutation();
+
+  const [
+    removeNote,
+  ] = useRemoveNoteMutation();
+
+  const [
+    archiveNote,
+  ] = useArchiveNoteMutation();
+
+  const [
+    unArchiveNote,
+  ] = useUnArchiveNoteMutation();
+
   useEffect(() => {
     setNoteId(note?.id);
   }, []);
-
-  const addNote = (createNote: ICreateNote) => {
-    console.log('create note');
-
-    api.post<INote>(`/Notes`, createNote)
-      .then((response) => {
-        console.log('response', response.data);
-        setNoteId(response.data.id);
-      })
-      .catch((e) => {
-        enqueueSnackbar(t('snack.create.error'), {
-          preventDuplicate: true
-        });
-      });
-  };
-
-  const updateNote = (updateNote: IUpdateNote) => {
-    console.log('update note');
-
-    api.put(`/Notes`, updateNote)
-      .then((response) => {})
-      .catch((e) => {
-        enqueueSnackbar(t('snack.update.error'), {
-          preventDuplicate: true
-        });
-      });
-  };
 
   const handleDebounceChange = (createNote: ICreateNote) => {
     console.log('debounces', createNote);
 
     if (!noteId) {
-      addNote(createNote);
+      addNote(createNote)
+        .unwrap()
+        .then((note) => {
+          setNoteId(note.id);
+        })
+        .catch((rejected) => {
+          enqueueSnackbar(t('snack.note.create.error'), {
+            preventDuplicate: true,
+          });
+        });
     } else {
       updateNote({
         ...createNote,
         id: noteId,
-      });
+      })
+        .unwrap()
+        .then((_) => {})
+        .catch((rejected) => {
+          enqueueSnackbar(t('snack.note.update.error'), {
+            preventDuplicate: true,
+          });
+        });
     }
   }
 
@@ -89,12 +106,84 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, onClose, ...props
   };
 
   const handleArchive = () => {
+    if (noteId) {
+      handleCancel();
+      archiveNote(noteId)
+        .unwrap()
+        .then(() => {
+          enqueueSnackbar(t('snack.archive.success'), {
+            preventDuplicate: true,
+          });
+        })
+        .catch((e) => {
+          enqueueSnackbar(t('snack.archive.error'), {
+            preventDuplicate: true,
+          });
+        });
+    }
+  };
 
+  const handleUnArchive = () => {
+    if (noteId) {
+      handleCancel();
+      unArchiveNote(noteId)
+        .unwrap()
+        .then(() => {
+          enqueueSnackbar(t('snack.unarchive.success'), {
+            preventDuplicate: true,
+          });
+        })
+        .catch((e) => {
+          enqueueSnackbar(t('snack.unarchive.error'), {
+            preventDuplicate: true,
+          });
+        });
+    }
   };
 
   const handleDelete = () => {
-
+    if (noteId) {
+      handleCancel();
+      removeNote(noteId)
+        .unwrap()
+        .then(() => {
+          enqueueSnackbar(t('snack.remove.success'), {
+            preventDuplicate: true,
+          });
+        })
+        .catch((e) => {
+          enqueueSnackbar(t('snack.remove.error'), {
+            preventDuplicate: true,
+          });
+        });
+    }
   };
+
+  const renderToolbar = () => !!noteId && (
+    <>
+      {/* Archive button */}
+      {(!!note && note.isArchived) ? (
+        <Tooltip title={t('tooltip.unarchive') as string}>
+          <IconButton onClick={handleUnArchive}>
+            <UnarchiveIcon />
+          </IconButton>
+        </Tooltip>
+      ) : (
+        <Tooltip title={t('tooltip.archive') as string}>
+          <IconButton onClick={handleArchive}>
+            <ArchiveIcon />
+          </IconButton>
+        </Tooltip>
+      )}
+
+      {/* Delete button */}
+      <Tooltip title={t('tooltip.delete') as string}>
+        <IconButton onClick={handleDelete}>
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
+    </>
+  );
 
   const renderAppBarOnMobile = () => (
     !matchesDesktop && (
@@ -105,6 +194,12 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, onClose, ...props
       >
         <Toolbar disableGutters sx={{ marginX: 1 }}>
           <BackButton onClick={onClose} />
+
+          {/* used for making icons appear on the right */}
+          <div style={{ display: 'flex', flex: 1 }}/>
+
+          {renderToolbar()}
+
         </Toolbar>
       </AppBar>
     )
@@ -126,10 +221,17 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, onClose, ...props
 
       {matchesDesktop && (
         <DialogActions>
-          {/* TODO: Add archive and delete button */}
+
+          {renderToolbar()}
+
+          {/* used for making icons appear on the left */}
+          <div style={{ display: 'flex', flex: 1 }}/>
+
+          {/* Close button */}
           <Button autoFocus onClick={handleCancel}>
             {t('dialog.close')}
           </Button>
+
         </DialogActions>
       )}
    </Dialog>

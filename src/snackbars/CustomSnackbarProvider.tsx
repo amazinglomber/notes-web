@@ -7,6 +7,9 @@ export interface CustomSnackbarProviderProps extends SnackbarProviderProps {
 }
 
 const CustomSnackbarProvider: React.FC<CustomSnackbarProviderProps> = ({ children, ...props }) => {
+  // const matchesDesktop = useMatchesDesktop();
+  // const theme = useTheme();
+
   const notistackRef = React.createRef<any>();
 
   const onClickDismiss = (key: SnackbarKey) => () => {
@@ -30,6 +33,11 @@ const CustomSnackbarProvider: React.FC<CustomSnackbarProviderProps> = ({ childre
       }}
       maxSnack={1}
       action={action}
+      // style={{
+      //   ...(!matchesDesktop && {
+      //     marginBottom: theme.spacing(8)
+      //   })
+      // }}
     >
       {children}
     </SnackbarProvider>

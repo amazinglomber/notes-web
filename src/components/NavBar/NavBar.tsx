@@ -1,19 +1,21 @@
 import React from 'react';
 import { AppBar, Toolbar, IconButton, useMediaQuery, styled, Theme, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { drawerWidth } from '../NavigationDrawer/NavigationDrawer';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { selectNavigationDrawerOpened } from '../../store/selectors';
-import useNotesTheme from '../../context/themeHooks';
+import { selectNavBarTitle } from '../../store/selectors';
 import { appSlice } from '../../store/reducers/appReducer';
 import useMatchesDesktop from '../../hooks/useMatchesDesktop';
+import { useTranslation } from 'react-i18next';
 
 export interface NavBarProps {}
 
 const NavBar: React.FC<NavBarProps> = () => {
+  const { t } = useTranslation();
+
   const matchesDesktop = useMatchesDesktop();
 
   const dispatch = useAppDispatch();
+  const title = useAppSelector(selectNavBarTitle);
 
   const handleMenuClick = () => {
     dispatch(appSlice.actions.setDrawerOpen(true));
@@ -56,7 +58,7 @@ const NavBar: React.FC<NavBarProps> = () => {
           )}
 
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Notes
+            {t(title)}
           </Typography>
         </Toolbar>
       </AppBar>

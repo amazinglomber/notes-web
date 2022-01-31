@@ -8,27 +8,31 @@
         "settings": "Ustawienia",
         "darkmode": "Ciemny motyw"
     },
-    "toolbar": {
-        "tooltip": {
-            "back": "Wróć",
-            "archive": "Przenieś do archiwum",
-            "unarchive": "Przywróć z archiwum",
-            "delete": "Usuń",
-            "selectall": "Zaznacz wszystkie",
-            "deselectall": "Odznacz wszystkie"
-        }
+    "tooltip": {
+        "back": "Wróć",
+        "archive": "Przenieś do archiwum",
+        "unarchive": "Przywróć z archiwum",
+        "delete": "Usuń",
+        "selectall": "Zaznacz wszystkie",
+        "deselectall": "Odznacz wszystkie"
     },
     "snack": {
+        "create": {
+            "error": "Błąd"
+        },
+        "update": {
+            "error": "Błąd"
+        },
+        "remove": {
+            "success": "Usunięto notatkę",
+            "error": "Błąd"
+        },
         "archive": {
             "success": "Zarchiwizowano notatkę",
             "error": "Błąd"
         },
         "unarchive": {
             "success": "Przywrócono z archiwum",
-            "error": "Błąd"
-        },
-        "delete": {
-            "success": "Usunięto notatkę",
             "error": "Błąd"
         }
     },

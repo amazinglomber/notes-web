@@ -1,50 +1,25 @@
-import {
-  Card,
-  CardContent,
-  Checkbox, Chip,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText, Stack,
-  Typography
-} from '@mui/material';
-import React, { useEffect,  useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { deselectNote, fetchNotes, selectNote } from '../../store/reducers/notesReducer';
-import { getAllNotes, getNotesStatus, getSelectedNotesIds } from '../../store/selectors';
-import NoteCard from './NoteCard';
-import { useNavigate } from 'react-router-dom';
+import React from 'react'
 import NoteListItem from './NoteListItem';
+import { Box } from '@mui/material';
 
 interface NotesListProps {
   notes: INote[];
 }
 
 const NotesList: React.FC<NotesListProps> = ({ notes }) => {
-  const dispatch = useAppDispatch();
-  const selectedNotesIds = useAppSelector(getSelectedNotesIds);
-
-  const navigate = useNavigate();
-
-  const handleOnNoteCheck = (value: INote['id']) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.currentTarget.checked) {
-      dispatch(selectNote(value));
-    } else {
-      dispatch(deselectNote(value));
-    }
-  }
-
   return (
-    <List>
+    <Box
+      sx={{
+        m: 2
+      }}
+    >
       {notes.map((note) => (
         <NoteListItem
           key={`${note.isArchived ? 'archived-' : ''}note-list-item-${note.id}`}
           note={note}
         />
       ))}
-    </List>
+    </Box>
   );
 
   // TODO: Better list items

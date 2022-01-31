@@ -8,15 +8,13 @@
         "settings": "Settings",
         "darkmode": "Dark mode"
     },
-    "toolbar": {
-        "tooltip": {
-            "back": "Go back",
-            "archive": "Archive",
-            "unarchive": "Unarchive",
-            "delete": "Delete",
-            "selectall": "Select all",
-            "deselectall": "Deselect all"
-        }
+    "tooltip": {
+        "back": "Go back",
+        "archive": "Archive",
+        "unarchive": "Unarchive",
+        "delete": "Delete",
+        "selectall": "Select all",
+        "deselectall": "Deselect all"
     },
     "snack": {
         "archive": {
@@ -27,7 +25,7 @@
             "success": "Note unarchived",
             "error": "Something went wrong"
         },
-        "delete": {
+        "remove": {
             "success": "Note deleted",
             "error": "Something went wrong"
         },

@@ -17,7 +17,7 @@ const BackButton: React.FC<BackButtonProps> = ({ onClick, ...props }) => {
   }
 
   return (
-    <Tooltip title={t('toolbar.tooltip.back') as string}>
+    <Tooltip title={t('tooltip.back') as string}>
       <IconButton
         color="inherit"
         onClick={onClick ? onClick : handleBackClick}

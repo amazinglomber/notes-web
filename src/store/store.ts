@@ -1,14 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import notesReducer from './reducers/notesReducer';
-import labelsReducer from './reducers/labelsReducer';
 import appReducer from './reducers/appReducer';
+import { notesApi } from '../api/api';
 
 const store = configureStore({
   reducer: {
     app: appReducer,
-    notes: notesReducer,
-    labels: labelsReducer,
-  }
+    [notesApi.reducerPath]: notesApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(notesApi.middleware),
 });
 
 export default store;

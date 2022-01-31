@@ -1,6 +1,6 @@
-import { Archive, Notes, Settings } from '@mui/icons-material';
+import { Archive, Delete, Notes, Settings } from '@mui/icons-material';
 import {
-  Button,
+  Button, Divider,
   Drawer,
   Fab,
   List,
@@ -33,6 +33,7 @@ interface IRoute {
   name: string;
   icon: JSX.Element;
   to: string;
+  divider?: boolean;
 }
 
 const routes: IRoute[] = [
@@ -40,6 +41,7 @@ const routes: IRoute[] = [
     name: 'nav.notes',
     icon: <DescriptionIcon />,
     to: '/',
+    divider: true,
   },
   // {
   //   name: 'nav.labels',
@@ -51,11 +53,11 @@ const routes: IRoute[] = [
     icon: <Archive />,
     to: '/archive',
   },
-  // {
-  //   name: 'nav.trash',
-  //   icon: <Delete />,
-  //   to: 'trash',
-  // },
+  {
+    name: 'nav.trash',
+    icon: <Delete />,
+    to: 'trash',
+  },
   {
     name: 'nav.settings',
     icon: <Settings />,
@@ -90,6 +92,7 @@ const NavigationDrawer = () => {
   const handleNavItemClicked = (route: IRoute) => () => {
     navigate(route.to);
     handleDrawerClose();
+    dispatch(appSlice.actions.setNavBarTitle(route.name));
   };
 
   return (
@@ -121,15 +124,18 @@ const NavigationDrawer = () => {
 
         <List sx={{ width: drawerWidth }}>
           {routes.map((route) => (
-            <ListItem
-              key={`nav-item-${route.name}`}
-              button
-              onClick={handleNavItemClicked(route)}
-              selected={location.pathname === route.to}
-            >
-              <ListItemIcon>{route.icon}</ListItemIcon>
-              <ListItemText>{t(route.name)}</ListItemText>
-            </ListItem>
+            <div key={`nav-item-${route.name}`}>
+              <ListItem
+                button
+                onClick={handleNavItemClicked(route)}
+                selected={location.pathname === route.to}
+              >
+                <ListItemIcon>{route.icon}</ListItemIcon>
+                <ListItemText>{t(route.name)}</ListItemText>
+              </ListItem>
+
+              {route.divider && <Divider />}
+            </div>
           ))}
 
           {/* Dark mode toggle */}
