@@ -43,6 +43,10 @@
             "placeholder": {
                 "title": "Title",
                 "body": "Note"
+            },
+            "validationError": {
+                "title": "Title cannot exceed 200 characters",
+                "body": "Body cannot exceed 2000 characters"
             }
         }
     },

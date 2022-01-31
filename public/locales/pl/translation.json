@@ -37,6 +37,10 @@
             "placeholder": {
                 "title": "Tytuł",
                 "body": "Notatka"
+            },
+            "validationError": {
+                "title": "Tytuł nie może zawierać więcej niż 200 znaków",
+                "body": "Notatka nie może zawierać więcej niż 2000 znaków"
             }
         }
     },
