@@ -1,9 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, debounce, Dialog, DialogActions, DialogContent, DialogProps } from '@mui/material';
+import {
+  AppBar,
+  Button,
+  debounce,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogProps, Toolbar,
+  useMediaQuery
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import api from '../../api';
 import { useSnackbar } from 'notistack';
 import NoteForm from '../Note/NoteForm';
+import useNotesTheme from '../../context/themeHooks';
+import BackButton from '../BackButton';
+import useMatchesDesktop from '../../hooks/useMatchesDesktop';
 
 export interface NoteFormDialogProps extends DialogProps {
   onClose: () => void;
@@ -15,6 +27,9 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, onClose, ...props
   const { enqueueSnackbar } = useSnackbar();
 
   const [noteId, setNoteId] = useState(note?.id);
+
+  const { theme } = useNotesTheme();
+  const matchesDesktop = useMatchesDesktop();
 
   useEffect(() => {
     setNoteId(note?.id);
@@ -81,23 +96,42 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, onClose, ...props
 
   };
 
+  const renderAppBarOnMobile = () => (
+    !matchesDesktop && (
+      <AppBar
+        color="transparent"
+        elevation={0}
+        sx={{ position: 'relative' }}
+      >
+        <Toolbar disableGutters sx={{ marginX: 1 }}>
+          <BackButton onClick={onClose} />
+        </Toolbar>
+      </AppBar>
+    )
+  );
+
   return (
     <Dialog
-      maxWidth="md"
+      maxWidth="sm"
       fullWidth
+      fullScreen={!matchesDesktop}
       onClose={onClose}
       {...props}
     >
-      <DialogContent>
+      {renderAppBarOnMobile()}
+
+      <DialogContent sx={{ padding: 2 }}>
         <NoteForm note={note} onChange={handleOnNoteChange} />
       </DialogContent>
 
-      <DialogActions>
-        {/* TODO: Add archive and delete button */}
-        <Button autoFocus onClick={handleCancel}>
-          {t('dialog.close')}
-        </Button>
-      </DialogActions>
+      {matchesDesktop && (
+        <DialogActions>
+          {/* TODO: Add archive and delete button */}
+          <Button autoFocus onClick={handleCancel}>
+            {t('dialog.close')}
+          </Button>
+        </DialogActions>
+      )}
    </Dialog>
   );
 };

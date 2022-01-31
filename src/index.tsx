@@ -14,6 +14,7 @@ import './i18n';
 import store from './store'
 import { NotesThemeProvider } from './context/ThemeContext';
 import CustomSnackbarProvider from './snackbars/CustomSnackbarProvider';
+import AppLoading from './components/AppLoading';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -25,12 +26,13 @@ ReactDOM.render(
 
           <BrowserRouter>
             {/* TODO: Better loading fallback */}
-            <Suspense fallback={<h3>Loading</h3>}>
+            <Suspense fallback={<AppLoading />}>
               <Routes>
 
-                <Route path="/" element={<App />}>
-                  <Route path="" element={<NotesPage />} />
-                  <Route path="/notes" element={<NotesPage />} />
+                <Route path="/*" element={<App />}>
+                  <Route path="" element={<NotesPage />}>
+                    {/*<Route path="modal" element={} />*/}
+                  </Route>
                   {/*<Route path="/notes/add" element={<AddNotePage />} />*/}
                   {/*<Route path="/notes/:noteId" element={<NoteDetailsPage />} />*/}
                   <Route path="archive" element={<ArchivePage />} />

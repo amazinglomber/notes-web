@@ -84,11 +84,7 @@ const NotesController: React.FC<NotesControllerProps> = ({ archive = false, }) =
 
   return (
     <div style={{ width: '100%' }}>
-      {renderToolbar()}
-
-      <Divider />
-
-      <Container component="main">
+      <main>
 
         <InfiniteScroll
           dataLength={notes.length}
@@ -100,7 +96,7 @@ const NotesController: React.FC<NotesControllerProps> = ({ archive = false, }) =
           <NotesList notes={notes} />
         </InfiniteScroll>
 
-      </Container>
+      </main>
     </div>
   );
 };

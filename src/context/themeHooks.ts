@@ -1,8 +1,10 @@
 import { useContext } from 'react';
 import ThemeContext from './ThemeContext';
+import { useTheme } from '@mui/material';
 
-const useTheme = () => {
-  return useContext(ThemeContext);
+const useNotesTheme = () => {
+  const theme = useTheme();
+  return {...useContext(ThemeContext), theme};
 };
 
-export default useTheme;
+export default useNotesTheme;

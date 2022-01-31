@@ -1,5 +1,8 @@
 import { RootState } from './hooks';
 
+export const selectNavigationDrawerOpened = (state: RootState) =>
+  state.app.navigationDrawerOpened;
+
 export const getAllNotes = (state: RootState) =>
   state.notes.notes.filter((note) => !note.isArchived);
 

@@ -1,15 +1,20 @@
 import React from 'react';
-import { Box, Button, Container, CssBaseline, Drawer, List, ListItem, ListItemIcon, ListItemText, ThemeProvider } from '@mui/material';
-import theme from './theme';
-import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+import { Box, Toolbar } from '@mui/material';
+import { Outlet } from 'react-router-dom';
 import NavigationDrawer from './components/NavigationDrawer/NavigationDrawer';
+import NavBar from './components/NavBar';
+import { NavBarOffset } from './components/NavBar/NavBar';
 
 function App() {
 
   return (
     <Box sx={{ display: 'flex' }}>
+      <NavBar />
       <NavigationDrawer />
-      <Outlet />
+      <div>
+        <NavBarOffset />
+        <Outlet />
+      </div>
     </Box>
   );
 }

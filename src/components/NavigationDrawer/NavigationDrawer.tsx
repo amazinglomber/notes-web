@@ -1,15 +1,33 @@
 import { Archive, Notes, Settings } from '@mui/icons-material';
-import { Button, Drawer, List, ListItem, ListItemIcon, ListItemText, Switch } from '@mui/material';
+import {
+  Button,
+  Drawer,
+  Fab,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Switch,
+  Toolbar,
+  useMediaQuery, Zoom
+} from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { nanoid } from '@reduxjs/toolkit';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import useTheme from '../../context/themeHooks';
+import useNotesTheme from '../../context/themeHooks';
 import i18n from '../../i18n';
 import NoteFormDialog from '../Dialogs/NoteFormDialog';
+import DescriptionIcon from '@mui/icons-material/Description';
+import EditIcon from '@mui/icons-material/Edit';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { selectNavigationDrawerOpened } from '../../store/selectors';
+import { appSlice } from '../../store/reducers/appReducer';
+import useMatchesDesktop from '../../hooks/useMatchesDesktop';
+import { NavBarOffset } from '../NavBar/NavBar';
 
-const drawerWidth = 280;
+export const drawerWidth = 280;
 
 interface IRoute {
   name: string;
@@ -20,7 +38,7 @@ interface IRoute {
 const routes: IRoute[] = [
   {
     name: 'nav.notes',
-    icon: <Notes />,
+    icon: <DescriptionIcon />,
     to: '/',
   },
   // {
@@ -47,101 +65,129 @@ const routes: IRoute[] = [
 
 const NavigationDrawer = () => {
   const { t } = useTranslation();
-  const { mode, toggleDark } = useTheme();
+  const { mode, toggleDark, theme } = useNotesTheme();
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const dispatch = useAppDispatch();
+  const drawerOpen = useAppSelector(selectNavigationDrawerOpened);
 
   // temporary
   const [lang, setLang] = useState('en');
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const fetchPost = (): Promise<INote> => {
-    return fetch('https://jsonplaceholder.typicode.com/posts')
-      .then((res) => res.json())
-      .then((posts) => {
-        const index = Math.floor(Math.random() * 10);
-        return {
-          id: nanoid(),
-          title: posts[index].title,
-          body: posts[index].body,
-          labels: ['label 1', 'label 2']
-        };
-      })
-      .catch((e) => e);
-  }
+  const matchesDesktop = useMatchesDesktop();
 
-  const onAddNoteClicked = () => {
+  const handleAddNoteClicked = () => {
     setDialogOpen(true);
   };
 
+  const handleDrawerClose = () => {
+    dispatch(appSlice.actions.setDrawerOpen(false))
+  };
+
+  const handleNavItemClicked = (route: IRoute) => () => {
+    navigate(route.to);
+    handleDrawerClose();
+  };
+
   return (
-    <div>
-        <Drawer
-          variant="permanent"
-          open
-          sx={{
-            width: drawerWidth
-          }}
+    <>
+      <Drawer
+        variant={matchesDesktop ? 'permanent' : 'temporary'}
+        open={drawerOpen}
+        onClose={handleDrawerClose}
+        sx={{
+          width: drawerWidth
+        }}
+      >
+        {/* Add note button */}
+        {matchesDesktop && (
+          <>
+            <NavBarOffset />
+            <Button
+              variant="contained"
+              size="large"
+              style={{
+                margin: 16,
+              }}
+              onClick={handleAddNoteClicked}
+            >
+              {t('nav.addnote')}
+            </Button>
+          </>
+        )}
+
+        <List sx={{ width: drawerWidth }}>
+          {routes.map((route) => (
+            <ListItem
+              key={`nav-item-${route.name}`}
+              button
+              onClick={handleNavItemClicked(route)}
+              selected={location.pathname === route.to}
+            >
+              <ListItemIcon>{route.icon}</ListItemIcon>
+              <ListItemText>{t(route.name)}</ListItemText>
+            </ListItem>
+          ))}
+
+          {/* Dark mode toggle */}
+          {/* TODO: Move it to settings page */}
+          <ListItem>
+            <ListItemIcon>
+              <DarkModeIcon />
+            </ListItemIcon>
+            <ListItemText>{t('nav.darkmode')}</ListItemText>
+            <Switch
+              edge="end"
+              checked={mode === 'dark'}
+              onChange={() => toggleDark()}
+            />
+          </ListItem>
+
+          {/* Debug language select */}
+          {/* TODO: Move it to settings page */}
+          <ListItem>
+            <ListItemText>Language</ListItemText>
+            <Switch
+              edge="end"
+              onChange={() => {
+                const newLang = lang === 'pl' ? 'en' : 'pl';
+                setLang(newLang);
+                i18n.changeLanguage(newLang);
+              }}
+            />
+          </ListItem>
+        </List>
+      </Drawer>
+
+      {/* Render FAB only on mobile and only on Notes page */}
+      {!matchesDesktop && (
+        <Zoom
+          in={location.pathname === '/'}
+          unmountOnExit
         >
-          {/* Add note button */}
-          <Button
-            variant="contained"
-            style={{
-              margin: 16
+          <Fab
+            color="primary"
+            sx={{
+              zIndex: theme.zIndex.modal - 1,
+              position: 'fixed',
+              bottom: theme.spacing(2),
+              right: theme.spacing(2),
             }}
-            onClick={onAddNoteClicked}
+            onClick={handleAddNoteClicked}
           >
-            {t('nav.addnote')}
-          </Button>
-
-          <List sx={{ width: drawerWidth }}>
-
-            {routes.map((route) => (
-              <NavLink
-                to={route.to}
-                key={`nav-item-${route.name}`}
-                style={{ textDecoration: "none", color: 'inherit' }}
-              >
-                <ListItem button>
-                  <ListItemIcon>{route.icon}</ListItemIcon>
-                  <ListItemText>{t(route.name)}</ListItemText>
-                </ListItem>
-              </NavLink>
-            ))}
-
-            {/* Dark mode toggle */}
-            <ListItem>
-              <ListItemIcon>
-                <DarkModeIcon />
-              </ListItemIcon>
-              <ListItemText>{t('nav.darkmode')}</ListItemText>
-              <Switch
-                edge="end"
-                checked={mode === 'dark'}
-                onChange={() => toggleDark()}
-              />
-            </ListItem>
-
-            {/* Debug language select */}
-            <ListItem>
-              <ListItemText>Language</ListItemText>
-              <Switch
-                edge="end"
-                onChange={() => {
-                  const newLang = lang === 'pl' ? 'en' : 'pl';
-                  setLang(newLang);
-                  i18n.changeLanguage(newLang);
-                }}
-              />
-            </ListItem>
-          </List>
-        </Drawer>
+            <EditIcon />
+          </Fab>
+        </Zoom>
+      )}
 
       <NoteFormDialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
       />
-    </div>
+    </>
   );
 };
 
