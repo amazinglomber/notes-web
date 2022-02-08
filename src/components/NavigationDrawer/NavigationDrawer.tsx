@@ -1,5 +1,16 @@
-import { Archive, Delete, Settings } from '@mui/icons-material';
-import { Button, Divider, Drawer, Fab, List, ListItem, ListItemIcon, ListItemText, Zoom } from '@mui/material';
+import { Archive, Settings } from '@mui/icons-material';
+import {
+  Button,
+  Divider,
+  Drawer,
+  Fab,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Zoom
+} from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -54,7 +65,7 @@ const routes: IRoute[] = [
 
 const NavigationDrawer = () => {
   const { t } = useTranslation();
-  const { mode, toggleDark, theme } = useNotesTheme();
+  const { theme } = useNotesTheme();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -62,8 +73,6 @@ const NavigationDrawer = () => {
   const dispatch = useAppDispatch();
   const drawerOpen = useAppSelector(selectNavigationDrawerOpened);
 
-  // temporary
-  const [lang, setLang] = useState('en');
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const matchesDesktop = useMatchesDesktop();
@@ -117,13 +126,14 @@ const NavigationDrawer = () => {
         <List sx={{ width: drawerWidth }}>
           {routes.map((route) => (
             <div key={`nav-item-${route.name}`}>
-              <ListItem
-                button
-                onClick={handleNavItemClicked(route)}
-                selected={location.pathname === route.to}
-              >
-                <ListItemIcon>{route.icon}</ListItemIcon>
-                <ListItemText>{t(route.name)}</ListItemText>
+              <ListItem disablePadding>
+                <ListItemButton
+                  onClick={handleNavItemClicked(route)}
+                  selected={location.pathname === route.to}
+                >
+                  <ListItemIcon>{route.icon}</ListItemIcon>
+                  <ListItemText>{t(route.name)}</ListItemText>
+                </ListItemButton>
               </ListItem>
 
               {route.divider && <Divider />}

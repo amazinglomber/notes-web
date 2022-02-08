@@ -33,6 +33,16 @@ const theme = (mode: 'light' | 'dark'): ThemeOptions => createTheme(
       borderRadius: 10,
     },
     components: {
+      // MuiListItemButton: {
+      //   styleOverrides: {
+      //     root: {
+      //       backgroundColor: 'red'
+      //     },
+      //     selected: {
+      //       backgroundColor: 'red'
+      //     }
+      //   }
+      // }
       // MuiCard: {
       //   styleOverrides: {
       //     root: {

@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { RootState } from '../store/hooks';
 
-const baseUrl = process.env.NODE_ENV === 'production'
-  ? 'https://api.notes.niezurawski.com/api'
-  : 'https://localhost:7002/api';
+const baseUrl = process.env.REACT_APP_API_URL;
+
+if (!baseUrl) throw new Error('No API URL env var.');
 
 type TagType = 'Notes';
 

@@ -109,7 +109,7 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
     }
   }
 
-  const debounceChange = useCallback(debounce(handleDebounceChange, 300), [noteId]);
+  const debounceChange = useCallback(debounce(handleDebounceChange, 300), [noteId, color]);
 
   const handleOnNoteChange = (createNote: ICreateNote) => {
     debounceChange(createNote);
@@ -185,6 +185,7 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
 
   const handleColor = (color: NoteColor) => () => {
     setColor(color);
+    setColorMenuAnchorEl(null);
 
     if (!noteId) return;
 

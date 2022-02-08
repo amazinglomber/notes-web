@@ -1,6 +1,6 @@
 import {
   Card,
-  CardContent,
+  CardContent, FormControl, InputLabel,
   List,
   ListItem,
   ListItemIcon,
@@ -16,6 +16,11 @@ import PageContainer from '../components/PageContainer/PageContainer';
 import { DarkMode } from '@mui/icons-material';
 import useNotesTheme from '../context/themeHooks';
 import LanguageIcon from '@mui/icons-material/Language';
+
+const languages: { code: string, name: string }[] = [
+  { code: 'pl', name: 'Polski' },
+  { code: 'en', name: 'English' },
+];
 
 const SettingsPage = () => {
   const { i18n, t } = useTranslation();
@@ -59,22 +64,25 @@ const SettingsPage = () => {
               <ListItemText>
                 {t('settings.language')}
               </ListItemText>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={i18n.language}
-                label={t('settings.language')}
-                onChange={handleLanguageChange}
-              >
-                {['en', 'pl'].map((lang) => (
-                  <MenuItem
-                    key={`language-option-${lang}`}
-                    value={lang}
-                  >
-                    {lang.toUpperCase()}
-                  </MenuItem>
-                ))}
-              </Select>
+              <FormControl sx={{ minWidth: '140px' }}>
+                <InputLabel id="language-select-label">{t('settings.language')}</InputLabel>
+                <Select
+                  labelId="language-select-label"
+                  value={i18n.language}
+                  label={t('settings.language')}
+                  onChange={handleLanguageChange}
+                >
+                  {languages.map(({ code, name }) => (
+                    <MenuItem
+                      key={`language-option-${code}`}
+                      value={code}
+                    >
+                      {name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
             </ListItem>
 
           </List>
