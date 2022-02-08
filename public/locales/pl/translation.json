@@ -1,4 +1,8 @@
 {
+    "title": {
+        "allNotes": "Wszystkie notatki",
+        "archivedNotes": "Archiwum"
+    },
     "nav": {
         "addnote": "Dodaj notatkę",
         "notes": "Notatki",
@@ -6,8 +10,11 @@
         "archive": "Archiwum",
         "trash": "Kosz",
         "settings": "Ustawienia",
+        "logout": "Wyloguj się"
+    },
+    "settings": {
         "darkmode": "Ciemny motyw",
-        "logout": "Wyloguj"
+        "language": "Język"
     },
     "tooltip": {
         "back": "Wróć",
@@ -15,7 +22,8 @@
         "unarchive": "Przywróć z archiwum",
         "delete": "Usuń",
         "selectall": "Zaznacz wszystkie",
-        "deselectall": "Odznacz wszystkie"
+        "deselectall": "Odznacz wszystkie",
+        "color": "Kolor"
     },
     "snack": {
         "create": {

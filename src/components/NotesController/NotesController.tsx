@@ -5,6 +5,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Loading from '../Loading';
 import NotesList from '../Note/NotesList';
 import { useGetNotesQuery } from '../../api/api';
+import CardGrid from '../CardGrid/CardGrid';
 
 export interface NotesControllerProps {
   archive?: boolean;
@@ -39,7 +40,6 @@ const NotesController: React.FC<NotesControllerProps> = ({ archive = false, }) =
 
   return (
     <div style={{ width: '100%' }}>
-      <main style={{ width: '100%' }}>
 
         <InfiniteScroll
           dataLength={data.notes.length}
@@ -48,10 +48,9 @@ const NotesController: React.FC<NotesControllerProps> = ({ archive = false, }) =
           loader={<Loading />}
           style={{ height: 'auto', overflow: 'hidden'}}
         >
-          <NotesList notes={data.notes} />
+          <CardGrid notes={data.notes} />
         </InfiniteScroll>
 
-      </main>
     </div>
   );
 };

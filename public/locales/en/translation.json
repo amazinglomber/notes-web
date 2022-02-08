@@ -1,4 +1,8 @@
 {
+    "title": {
+        "allNotes": "All notes",
+        "archivedNotes": "Archive"
+    },
     "nav": {
         "addnote": "Add note",
         "notes": "Notes",
@@ -6,8 +10,11 @@
         "archive": "Archive",
         "trash": "Trash",
         "settings": "Settings",
-        "darkmode": "Dark mode",
         "logout": "Log out"
+    },
+    "settings": {
+        "darkmode": "Dark mode",
+        "language": "Language"
     },
     "tooltip": {
         "back": "Go back",
@@ -15,7 +22,8 @@
         "unarchive": "Unarchive",
         "delete": "Delete",
         "selectall": "Select all",
-        "deselectall": "Deselect all"
+        "deselectall": "Deselect all",
+        "color": "Color"
     },
     "snack": {
         "archive": {

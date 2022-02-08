@@ -1,25 +1,31 @@
 import React from 'react'
 import NoteListItem from './NoteListItem';
-import { Box } from '@mui/material';
+import { Box, ImageList } from '@mui/material';
+import NoteCard from './NoteCard';
+import useMatchesDesktop from '../../hooks/useMatchesDesktop';
 
 interface NotesListProps {
   notes: INote[];
 }
 
 const NotesList: React.FC<NotesListProps> = ({ notes }) => {
+  const matchesDesktop = useMatchesDesktop();
+
   return (
-    <Box
+    <ImageList
       sx={{
         m: 2
       }}
+      cols={matchesDesktop ? 3 : 2}
+      gap={2}
     >
       {notes.map((note) => (
-        <NoteListItem
+        <NoteCard
           key={`${note.isArchived ? 'archived-' : ''}note-list-item-${note.id}`}
           note={note}
         />
       ))}
-    </Box>
+    </ImageList>
   );
 
   // TODO: Better list items

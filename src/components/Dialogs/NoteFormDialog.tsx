@@ -6,7 +6,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogProps, IconButton, Toolbar, Tooltip,
+  DialogProps, IconButton, Menu, Stack, Toolbar, Tooltip,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
@@ -17,12 +17,15 @@ import useMatchesDesktop from '../../hooks/useMatchesDesktop';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import UnarchiveIcon from '@mui/icons-material/Unarchive';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PaletteIcon from '@mui/icons-material/Palette';
+import CircleIcon from '@mui/icons-material/Circle';
 import {
   useAddNoteMutation,
   useArchiveNoteMutation,
-  useRemoveNoteMutation, useUnArchiveNoteMutation,
+  useRemoveNoteMutation, useUnArchiveNoteMutation, useUpdateColorMutation,
   useUpdateNoteMutation
 } from '../../api/api';
+import { NoteColors } from '../../theme';
 
 export interface NoteFormDialogProps extends DialogProps {
   onClose: () => void;
@@ -37,6 +40,11 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
 
   const { theme } = useNotesTheme();
   const matchesDesktop = useMatchesDesktop();
+
+  // Color menu
+  const [colorMenuAnchorEl, setColorMenuAnchorEl] = React.useState<null | HTMLElement>(null);
+  const colorMenuOpen = Boolean(colorMenuAnchorEl);
+  const [color, setColor] = useState(note?.color || 'Yellow');
 
   const [
     addNote,
@@ -58,13 +66,24 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
     unArchiveNote,
   ] = useUnArchiveNoteMutation();
 
+  const [
+    updateColor,
+  ] = useUpdateColorMutation();
+
   useEffect(() => {
     setNoteId(note?.id);
+
+    if (open) {
+      setColor(note?.color || 'Yellow');
+    }
   }, [open]);
 
   const handleDebounceChange = (createNote: ICreateNote) => {
     if (!noteId) {
-      addNote(createNote)
+      addNote({
+        ...createNote,
+        color: color,
+      })
         .unwrap()
         .then((note) => {
           setNoteId(note.id);
@@ -78,6 +97,7 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
       updateNote({
         ...createNote,
         id: noteId,
+        color: color,
       })
         .unwrap()
         .then((_) => {})
@@ -92,7 +112,6 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
   const debounceChange = useCallback(debounce(handleDebounceChange, 300), [noteId]);
 
   const handleOnNoteChange = (createNote: ICreateNote) => {
-    console.log('handleNoteChange', createNote);
     debounceChange(createNote);
   };
 
@@ -103,73 +122,95 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
   };
 
   const handleArchive = () => {
-    if (noteId) {
-      handleCancel();
-      archiveNote(noteId)
-        .unwrap()
-        .then(() => {
-          enqueueSnackbar(t('snack.archive.success'), {
-            preventDuplicate: true,
-          });
-        })
-        .catch((e) => {
-          enqueueSnackbar(t('snack.archive.error'), {
-            preventDuplicate: true,
-          });
+    if (!noteId) return;
+
+    handleCancel();
+    archiveNote(noteId)
+      .unwrap()
+      .then(() => {
+        enqueueSnackbar(t('snack.archive.success'), {
+          preventDuplicate: true,
         });
-    }
+      })
+      .catch((e) => {
+        enqueueSnackbar(t('snack.archive.error'), {
+          preventDuplicate: true,
+        });
+      });
   };
 
   const handleUnArchive = () => {
-    if (noteId) {
-      handleCancel();
-      unArchiveNote(noteId)
-        .unwrap()
-        .then(() => {
-          enqueueSnackbar(t('snack.unarchive.success'), {
-            preventDuplicate: true,
-          });
-        })
-        .catch((e) => {
-          enqueueSnackbar(t('snack.unarchive.error'), {
-            preventDuplicate: true,
-          });
+    if (!noteId) return;
+
+    handleCancel();
+    unArchiveNote(noteId)
+      .unwrap()
+      .then(() => {
+        enqueueSnackbar(t('snack.unarchive.success'), {
+          preventDuplicate: true,
         });
-    }
+      })
+      .catch((e) => {
+        enqueueSnackbar(t('snack.unarchive.error'), {
+          preventDuplicate: true,
+        });
+      });
   };
 
   const handleDelete = () => {
-    if (noteId) {
-      handleCancel();
-      removeNote(noteId)
-        .unwrap()
-        .then(() => {
-          enqueueSnackbar(t('snack.remove.success'), {
-            preventDuplicate: true,
-          });
-        })
-        .catch((e) => {
-          enqueueSnackbar(t('snack.remove.error'), {
-            preventDuplicate: true,
-          });
+    if (!noteId) return;
+
+    handleCancel();
+    removeNote(noteId)
+      .unwrap()
+      .then(() => {
+        enqueueSnackbar(t('snack.remove.success'), {
+          preventDuplicate: true,
         });
-    }
+      })
+      .catch((e) => {
+        enqueueSnackbar(t('snack.remove.error'), {
+          preventDuplicate: true,
+        });
+      });
   };
 
-  const renderToolbar = () => !!noteId && (
+  const handleOpenColorMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setColorMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseColorMenu = () => {
+    setColorMenuAnchorEl(null);
+  };
+
+  const handleColor = (color: NoteColor) => () => {
+    setColor(color);
+
+    if (!noteId) return;
+
+    updateColor({ id: noteId, color })
+      .unwrap()
+      .then(() => {})
+      .catch((e) => {
+        enqueueSnackbar(t('snack.update.error'), {
+          preventDuplicate: true,
+        });
+      })
+  };
+
+  const renderToolbar = () => (
     <>
-      {/* Archive button */}
-      {(!!note && note.isArchived) ? (
-        <Tooltip title={t('tooltip.unarchive') as string}>
-          <IconButton onClick={handleUnArchive}>
-            <UnarchiveIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
+      {(!note || !note.isArchived) ? (
         <Tooltip title={t('tooltip.archive') as string}>
           <IconButton onClick={handleArchive}>
             <ArchiveIcon />
           </IconButton>
+        </Tooltip>
+      ) : (
+        <Tooltip title={t('tooltip.unarchive') as string}>
+        <IconButton onClick={handleUnArchive}>
+        <UnarchiveIcon />
+        </IconButton>
         </Tooltip>
       )}
 
@@ -179,15 +220,23 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
           <DeleteIcon />
         </IconButton>
       </Tooltip>
+
+      <Tooltip title={t('tooltip.color') as string}>
+        <IconButton onClick={handleOpenColorMenu}>
+          <PaletteIcon />
+        </IconButton>
+      </Tooltip>
     </>
   );
 
   const renderAppBarOnMobile = () => (
     !matchesDesktop && (
       <AppBar
-        color="transparent"
         elevation={0}
-        sx={{ position: 'relative' }}
+        sx={{
+          position: 'relative',
+          bgcolor: NoteColors[color],
+        }}
       >
         <Toolbar disableGutters sx={{ marginX: 1 }}>
           <BackButton onClick={onClose} />
@@ -213,12 +262,21 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
     >
       {renderAppBarOnMobile()}
 
-      <DialogContent sx={{ padding: 2 }}>
+      <DialogContent
+        sx={{
+          padding: 2,
+          bgcolor: NoteColors[color],
+        }}
+      >
         <NoteForm note={note} onChange={handleOnNoteChange} />
       </DialogContent>
 
       {matchesDesktop && (
-        <DialogActions>
+        <DialogActions
+          sx={{
+            bgcolor: NoteColors[color],
+          }}
+        >
 
           {renderToolbar()}
 
@@ -226,12 +284,46 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
           <div style={{ display: 'flex', flex: 1 }}/>
 
           {/* Close button */}
-          <Button autoFocus onClick={handleCancel}>
+          <Button
+            autoFocus
+            onClick={handleCancel}
+            color="inherit"
+          >
             {t('dialog.close')}
           </Button>
 
         </DialogActions>
       )}
+
+      <Menu
+        anchorEl={colorMenuAnchorEl}
+        open={colorMenuOpen}
+        onClose={handleCloseColorMenu}
+      >
+        <Stack
+          direction="row"
+          sx={{
+            px: 1,
+          }}
+        >
+          {Object.entries(NoteColors).map(([key , value]) => (
+            <IconButton
+              key={`color-${key}`}
+              sx={{
+                p: 0
+              }}
+              onClick={handleColor(key as NoteColor)}
+            >
+              <CircleIcon
+                sx={{
+                  color: value,
+                  fontSize: 40,
+                }}
+              />
+            </IconButton>
+          ))}
+        </Stack>
+      </Menu>
    </Dialog>
   );
 };

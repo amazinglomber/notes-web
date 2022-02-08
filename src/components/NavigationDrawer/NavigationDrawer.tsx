@@ -1,23 +1,9 @@
-import { Archive, Delete, Notes, Settings } from '@mui/icons-material';
-import {
-  Button, Divider,
-  Drawer,
-  Fab,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Switch,
-  Toolbar,
-  useMediaQuery, Zoom
-} from '@mui/material';
+import { Archive, Delete, Settings } from '@mui/icons-material';
+import { Button, Divider, Drawer, Fab, List, ListItem, ListItemIcon, ListItemText, Zoom } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { nanoid } from '@reduxjs/toolkit';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useNotesTheme from '../../context/themeHooks';
-import i18n from '../../i18n';
 import NoteFormDialog from '../Dialogs/NoteFormDialog';
 import DescriptionIcon from '@mui/icons-material/Description';
 import EditIcon from '@mui/icons-material/Edit';
@@ -25,7 +11,6 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectNavigationDrawerOpened } from '../../store/selectors';
 import { appSlice } from '../../store/reducers/appReducer';
 import useMatchesDesktop from '../../hooks/useMatchesDesktop';
-import { NavBarOffset } from '../NavBar/NavBar';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -55,11 +40,11 @@ const routes: IRoute[] = [
     icon: <Archive />,
     to: '/app/archive',
   },
-  {
-    name: 'nav.trash',
-    icon: <Delete />,
-    to: '/app/trash',
-  },
+  // {
+  //   name: 'nav.trash',
+  //   icon: <Delete />,
+  //   to: '/app/trash',
+  // },
   {
     name: 'nav.settings',
     icon: <Settings />,
@@ -116,7 +101,6 @@ const NavigationDrawer = () => {
         {/* Add note button */}
         {matchesDesktop && (
           <>
-            <NavBarOffset />
             <Button
               variant="contained"
               size="large"
@@ -145,34 +129,6 @@ const NavigationDrawer = () => {
               {route.divider && <Divider />}
             </div>
           ))}
-
-          {/* Dark mode toggle */}
-          {/* TODO: Move it to settings page */}
-          <ListItem>
-            <ListItemIcon>
-              <DarkModeIcon />
-            </ListItemIcon>
-            <ListItemText>{t('nav.darkmode')}</ListItemText>
-            <Switch
-              edge="end"
-              checked={mode === 'dark'}
-              onChange={() => toggleDark()}
-            />
-          </ListItem>
-
-          {/* Debug language select */}
-          {/* TODO: Move it to settings page */}
-          <ListItem>
-            <ListItemText>Language</ListItemText>
-            <Switch
-              edge="end"
-              onChange={() => {
-                const newLang = lang === 'pl' ? 'en' : 'pl';
-                setLang(newLang);
-                i18n.changeLanguage(newLang);
-              }}
-            />
-          </ListItem>
         </List>
 
         <div style={{ display: 'flex', flex: 1 }} />
@@ -195,7 +151,7 @@ const NavigationDrawer = () => {
       {/* Render FAB only on mobile and only on Notes page */}
       {!matchesDesktop && (
         <Zoom
-          in={location.pathname === '/'}
+          in={location.pathname === '/app/notes'}
           unmountOnExit
         >
           <Fab

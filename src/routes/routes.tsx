@@ -15,7 +15,7 @@ const routes = (isLoggedIn: boolean): RouteObject[] => [
       { path: '', element: <Navigate to="/app/notes" /> },
       { path: 'notes', element: <NotesPage /> },
       { path: 'archive', element: <ArchivePage /> },
-      { path: 'trash', element: <TrashPage /> },
+      // { path: 'trash', element: <TrashPage /> },
       { path: 'settings', element: <SettingsPage /> },
     ]
   },

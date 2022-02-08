@@ -74,6 +74,13 @@ export const notesApi = createApi({
       }),
       invalidatesTags: [{ type: 'Notes', id: 'LIST' }],
     }),
+    updateColor: builder.mutation<void, { id: INote['id'], color: NoteColor}>({
+      query: ({ id, color }) => ({
+        url: `/Notes/${id}/Color/${color}`,
+        method: 'POST',
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: 'Notes', id }]
+    })
   }),
 });
 
@@ -85,4 +92,5 @@ export const {
   useRemoveNoteMutation,
   useArchiveNoteMutation,
   useUnArchiveNoteMutation,
+  useUpdateColorMutation,
 } = notesApi;
