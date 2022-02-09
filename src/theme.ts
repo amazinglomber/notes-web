@@ -8,7 +8,7 @@ const theme = (mode: 'light' | 'dark'): ThemeOptions => createTheme(
         default: mode === 'light' ? '#f6f6f6' : '#333333',
       },
       primary: {
-        main: '#a5c8e4',
+        main: '#9AD0EC',
       },
       secondary: {
         main: '#f50057',

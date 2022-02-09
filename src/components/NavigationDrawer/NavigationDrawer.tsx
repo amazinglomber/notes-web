@@ -108,20 +108,20 @@ const NavigationDrawer = () => {
         }}
       >
         {/* Add note button */}
-        {matchesDesktop && (
-          <>
-            <Button
-              variant="contained"
-              size="large"
-              style={{
-                margin: 16,
-              }}
-              onClick={handleAddNoteClicked}
-            >
-              {t('nav.addnote')}
-            </Button>
-          </>
-        )}
+        {/*{matchesDesktop && (*/}
+        {/*  <>*/}
+        {/*    <Button*/}
+        {/*      variant="contained"*/}
+        {/*      size="large"*/}
+        {/*      style={{*/}
+        {/*        margin: 16,*/}
+        {/*      }}*/}
+        {/*      onClick={handleAddNoteClicked}*/}
+        {/*    >*/}
+        {/*      {t('nav.addnote')}*/}
+        {/*    </Button>*/}
+        {/*  </>*/}
+        {/*)}*/}
 
         <List sx={{ width: drawerWidth }}>
           {routes.map((route) => (
@@ -144,6 +144,7 @@ const NavigationDrawer = () => {
         <div style={{ display: 'flex', flex: 1 }} />
 
         <List>
+          <Divider />
           <ListItem
             button
             onClick={handleLogoutClicked}
@@ -158,26 +159,26 @@ const NavigationDrawer = () => {
         </List>
       </Drawer>
 
-      {/* Render FAB only on mobile and only on Notes page */}
-      {!matchesDesktop && (
-        <Zoom
-          in={location.pathname === '/app/notes'}
-          unmountOnExit
+      {/* Add note button */}
+      <Zoom
+        in={location.pathname === '/app/notes'}
+        unmountOnExit
+      >
+        <Fab
+          color="primary"
+          sx={{
+            zIndex: theme.zIndex.modal - 1,
+            position: 'fixed',
+            bottom: theme.spacing(2),
+            right: theme.spacing(2),
+          }}
+          variant={matchesDesktop ? 'extended' : 'circular'}
+          onClick={handleAddNoteClicked}
         >
-          <Fab
-            color="primary"
-            sx={{
-              zIndex: theme.zIndex.modal - 1,
-              position: 'fixed',
-              bottom: theme.spacing(2),
-              right: theme.spacing(2),
-            }}
-            onClick={handleAddNoteClicked}
-          >
-            <EditIcon />
-          </Fab>
-        </Zoom>
-      )}
+          <EditIcon sx={{ mr: matchesDesktop ? 1 : 0 }}/>
+          {matchesDesktop && t('nav.addnote')}
+        </Fab>
+      </Zoom>
 
       <NoteFormDialog
         open={dialogOpen}

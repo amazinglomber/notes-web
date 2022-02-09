@@ -14,10 +14,13 @@ const NotesGrid: React.FC<CardGridProps> = ({ notes }) => {
   return (
     <Box
       sx={{
-        columns: '4 240px',
+        columns: {
+          xs: '4 210px',
+          sm: '4 240px'
+        },
         columnGap: {
-          xs: 2,
-          sm: 3,
+          xs: 1,
+          sm: 2,
         },
         pb: 1,
       }}

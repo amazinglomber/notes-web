@@ -19,8 +19,8 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, ...params }) => {
       sx={{
         bgcolor: NoteColors[note.color],
         mb: {
-          xs: 2,
-          sm: 3,
+          xs: 1,
+          sm: 2,
         }
       }}
       {...params}
@@ -43,7 +43,7 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, ...params }) => {
         >
           <Typography
             gutterBottom
-            variant="h5"
+            variant="h6"
             component="div"
             style={{
               whiteSpace: 'pre-wrap',
@@ -52,7 +52,7 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, ...params }) => {
           >
             {note.title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="subtitle2" color="text.secondary">
             {note.body}
           </Typography>
         </CardContent>

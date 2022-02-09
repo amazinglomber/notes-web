@@ -19,7 +19,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 
 const languages: { code: string, name: string }[] = [
   { code: 'pl', name: 'Polski' },
-  { code: 'en', name: 'English' },
+  { code: 'en-US', name: 'English' },
 ];
 
 const SettingsPage = () => {

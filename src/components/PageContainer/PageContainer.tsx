@@ -1,19 +1,37 @@
 
 import React from 'react';
-import { Box, styled } from '@mui/material';
+import { Box, styled, Typography } from '@mui/material';
+import useMatchesDesktop from '../../hooks/useMatchesDesktop';
 
-export interface PageContainerProps {}
+export interface PageContainerProps {
+  title?: string;
+}
 
-const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
+const PageContainer: React.FC<PageContainerProps> = ({ title, children }) => {
+  const matchesDesktop = useMatchesDesktop();
+
   return (
     <Box
       sx={{
-        padding: {
+        py: {
           xs: 2,
+          sm: 4,
+        },
+        px: {
+          xs: 1,
           sm: 4,
         },
       }}
     >
+      {(!!title && matchesDesktop) && (
+        <Typography
+          variant="h4"
+          color="primary"
+          sx={{ mb: 4 }}
+        >
+          {title}
+        </Typography>
+      )}
       {children}
     </Box>
   )
