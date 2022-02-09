@@ -22,7 +22,8 @@ const NotesGrid: React.FC<CardGridProps> = ({ notes }) => {
           xs: 1,
           sm: 2,
         },
-        pb: 1,
+        py: 1,
+        mt: -1,
       }}
     >
       {notes.map((note) => (
