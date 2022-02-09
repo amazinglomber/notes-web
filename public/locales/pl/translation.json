@@ -68,5 +68,10 @@
                 "description": "Czy jesteś pewien, że chcesz usunąć notatkę? Tej operacji nie da się odwrócić."
             }
         }
+    },
+    "login": {
+        "title": "Zaloguj się",
+        "description": "Musisz się zalogować, aby móc używać tej aplikacji.",
+        "loginBtn": "Zaloguj się"
     }
 }

@@ -1,14 +1,15 @@
 import React from 'react';
 import {  Button, Card, CardContent, Typography } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
-import PersonIcon from '@mui/icons-material/Person';
-import Spacer from '../Spacer';
 import { useAuth0 } from '@auth0/auth0-react';
+import Spacer from '../components/Spacer/Spacer';
+import { useTranslation } from 'react-i18next';
 
-export interface LoginLayoutProps {}
+export interface LoginPageProps {}
 
-const LoginLayout: React.FC<LoginLayoutProps> = () => {
-  const { loginWithPopup, loginWithRedirect } = useAuth0();
+const LoginPage: React.FC<LoginPageProps> = () => {
+  const { t } = useTranslation();
+  const { loginWithRedirect } = useAuth0();
 
   const handleLogInClick = () => {
     loginWithRedirect();
@@ -26,7 +27,7 @@ const LoginLayout: React.FC<LoginLayoutProps> = () => {
       <Card
         sx={{
           width: {
-            xs: 1, // theme.breakpoints.up('xs')
+            xs: 1,
             sm: 450,
           },
           height: {
@@ -44,10 +45,11 @@ const LoginLayout: React.FC<LoginLayoutProps> = () => {
             padding: 4,
           }}
         >
-          <PersonIcon sx={{ fontSize: 120, mb: 2 }} />
-          <Typography variant="h5" sx={{ mb: 2 }}>Log in</Typography>
-          <Typography variant="h6">You have to be logged in to use this app.</Typography>
+          <DescriptionIcon sx={{ fontSize: 120, mb: 2 }} />
+          <Typography variant="h5" sx={{ mb: 2 }}>{t('login.title')}</Typography>
+          <Typography variant="h6" sx={{ textAlign: 'center' }}>{t('login.description')}</Typography>
 
+          <Spacer />
           <Spacer />
 
           <Button
@@ -56,13 +58,14 @@ const LoginLayout: React.FC<LoginLayoutProps> = () => {
             sx={{ mb: 2 }}
             onClick={handleLogInClick}
           >
-            Log in
+            {t('login.loginBtn')}
           </Button>
-          {/*<Button variant="text">Create account</Button>*/}
+          <Spacer />
+
         </CardContent>
       </Card>
     </div>
   );
 };
 
-export default LoginLayout;
+export default LoginPage;

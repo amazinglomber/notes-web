@@ -68,5 +68,10 @@
                 "description": "Are you sure you want to delete note? This action cannot be undone."
             }
         }
+    },
+    "login": {
+        "title": "Log in",
+        "description": "You have to be logged in to use this app.",
+        "loginBtn": "Log in"
     }
 }

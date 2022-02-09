@@ -10,17 +10,8 @@ import { useAppDispatch } from './store/hooks';
 import appReducer, { appSlice } from './store/reducers/appReducer';
 
 const App = () => {
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   const routing = useRoutes(routes(isAuthenticated));
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    getAccessTokenSilently()
-      .then((token) => {
-        dispatch(appSlice.actions.setAuthToken(token));
-      });
-  }, []);
 
   return (
     <>

@@ -4,7 +4,7 @@ import NotesPage from './NotesPage';
 import ArchivePage from './ArchivePage';
 import TrashPage from './TrashPage';
 import SettingsPage from './SettingsPage';
-import LoginLayout from '../components/LoginLayout';
+import LoginPage from './LoginPage';
 
 const routes = (isLoggedIn: boolean): RouteObject[] => [
   {
@@ -22,7 +22,7 @@ const routes = (isLoggedIn: boolean): RouteObject[] => [
   {
     path: '/',
     // if user is NOT logged in, load the login layout, otherwise redirect to /app
-    element: !isLoggedIn ? <LoginLayout /> : <Navigate to="/app" />,
+    element: !isLoggedIn ? <LoginPage /> : <Navigate to="/app" />,
   }
 ];
 

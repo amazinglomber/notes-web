@@ -52,8 +52,16 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, ...params }) => {
           >
             {note.title}
           </Typography>
-          <Typography variant="subtitle2" color="text.secondary">
-            {note.body}
+          <Typography
+            variant="subtitle2"
+            color="text.secondary"
+            style={{
+              whiteSpace: 'pre-wrap',
+              wordWrap: 'break-word',
+            }}
+          >
+            {note.body.substring(0, 300)}
+            {note.body.length > 300 && '...'}
           </Typography>
         </CardContent>
       </CardActionArea>

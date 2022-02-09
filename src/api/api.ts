@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/dist/query/react';
 import { RootState } from '../store/hooks';
 
 const baseUrl = process.env.REACT_APP_API_URL;
@@ -10,7 +10,7 @@ type TagType = 'Notes';
 export const notesApi = createApi({
   reducerPath: 'notesApi',
   tagTypes: ['Notes'] as TagType[],
-  baseQuery: fetchBaseQuery({
+  baseQuery: retry(fetchBaseQuery({
     baseUrl,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).app.authToken;
@@ -21,7 +21,7 @@ export const notesApi = createApi({
 
       return headers;
     }
-  }),
+  }), { maxRetries: 3 }),
   endpoints: (builder) => ({
     getNotes: builder.query<IGetNotesResponse, { page: number, archive: boolean}>({
       query: ({ page = 1, archive = false }) => `/Notes?Page=${page}&IsArchived=${archive}`,
