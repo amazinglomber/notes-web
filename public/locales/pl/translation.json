@@ -61,6 +61,7 @@
         "confirm": "Ok",
         "cancel": "Anuluj",
         "close": "Zamknij",
+        "save": "Zapisz",
         "note": {
             "delete": {
                 "title": "Usunąć notatkę?",

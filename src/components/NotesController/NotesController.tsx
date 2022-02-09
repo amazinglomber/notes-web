@@ -3,9 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Typography } from '@mui/material';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Loading from '../Loading';
-import NotesList from '../Note/NotesList';
 import { useGetNotesQuery } from '../../api/api';
-import CardGrid from '../CardGrid/CardGrid';
+import NotesGrid from '../Note/NotesGrid';
 
 export interface NotesControllerProps {
   archive?: boolean;
@@ -48,7 +47,7 @@ const NotesController: React.FC<NotesControllerProps> = ({ archive = false, }) =
           loader={<Loading />}
           style={{ height: 'auto', overflow: 'hidden'}}
         >
-          <CardGrid notes={data.notes} />
+          <NotesGrid notes={data.notes} />
         </InfiniteScroll>
 
     </div>

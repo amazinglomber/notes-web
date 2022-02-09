@@ -1,6 +1,6 @@
 import React from 'react';
 import useMatchesDesktop from '../../hooks/useMatchesDesktop';
-import NoteCard from '../Note/NoteCard';
+import NoteCard from './NoteCard';
 import useNotesTheme from '../../context/themeHooks';
 import { Box } from '@mui/material';
 
@@ -8,7 +8,7 @@ export interface CardGridProps {
   notes: INote[];
 }
 
-const CardGrid: React.FC<CardGridProps> = ({ notes }) => {
+const NotesGrid: React.FC<CardGridProps> = ({ notes }) => {
   const { theme } = useNotesTheme();
 
   return (
@@ -32,4 +32,4 @@ const CardGrid: React.FC<CardGridProps> = ({ notes }) => {
   );
 };
 
-export default CardGrid;
+export default NotesGrid;

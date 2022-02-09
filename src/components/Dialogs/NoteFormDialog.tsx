@@ -37,6 +37,7 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
   const { enqueueSnackbar } = useSnackbar();
 
   const [noteId, setNoteId] = useState(note?.id);
+  const [createNote, setCreateNote] = useState<ICreateNote | null>();
 
   const { theme } = useNotesTheme();
   const matchesDesktop = useMatchesDesktop();
@@ -112,19 +113,27 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
   const debounceChange = useCallback(debounce(handleDebounceChange, 300), [noteId, color]);
 
   const handleOnNoteChange = (createNote: ICreateNote) => {
-    debounceChange(createNote);
+    setCreateNote(createNote);
+    // debounceChange(createNote);
   };
 
-  const handleCancel = () => {
+  const handleClose = () => {
     if (onClose) {
       onClose();
     }
   };
 
+  const handleNoteSave = () => {
+    if (!createNote) return;
+
+    handleDebounceChange(createNote);
+    handleClose();
+  };
+
   const handleArchive = () => {
     if (!noteId) return;
 
-    handleCancel();
+    handleClose();
     archiveNote(noteId)
       .unwrap()
       .then(() => {
@@ -142,7 +151,7 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
   const handleUnArchive = () => {
     if (!noteId) return;
 
-    handleCancel();
+    handleClose();
     unArchiveNote(noteId)
       .unwrap()
       .then(() => {
@@ -160,7 +169,7 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
   const handleDelete = () => {
     if (!noteId) return;
 
-    handleCancel();
+    handleClose();
     removeNote(noteId)
       .unwrap()
       .then(() => {
@@ -201,6 +210,13 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
 
   const renderToolbar = () => (
     <>
+      {/* Delete button */}
+      <Tooltip title={t('tooltip.delete') as string}>
+        <IconButton onClick={handleDelete}>
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
+
       {(!note || !note.isArchived) ? (
         <Tooltip title={t('tooltip.archive') as string}>
           <IconButton onClick={handleArchive}>
@@ -215,19 +231,24 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
         </Tooltip>
       )}
 
-      {/* Delete button */}
-      <Tooltip title={t('tooltip.delete') as string}>
-        <IconButton onClick={handleDelete}>
-          <DeleteIcon />
-        </IconButton>
-      </Tooltip>
-
+      {/* Color button */}
       <Tooltip title={t('tooltip.color') as string}>
         <IconButton onClick={handleOpenColorMenu}>
           <PaletteIcon />
         </IconButton>
       </Tooltip>
     </>
+  );
+
+  const renderSaveButton = () => (
+    <Button
+      autoFocus
+      onClick={handleNoteSave}
+      color="inherit"
+      disabled={!createNote || (createNote.title === '' && createNote.body === '')}
+    >
+      {t('dialog.save')}
+    </Button>
   );
 
   const renderAppBarOnMobile = () => (
@@ -245,7 +266,7 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
           {/* used for making icons appear on the right */}
           <div style={{ display: 'flex', flex: 1 }}/>
 
-          {renderToolbar()}
+          {renderSaveButton()}
 
         </Toolbar>
       </AppBar>
@@ -272,29 +293,33 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
         <NoteForm note={note} onChange={handleOnNoteChange} />
       </DialogContent>
 
-      {matchesDesktop && (
-        <DialogActions
-          sx={{
-            bgcolor: NoteColors[color],
-          }}
-        >
+      <DialogActions
+        sx={{
+          bgcolor: NoteColors[color],
+        }}
+      >
+        {renderToolbar()}
 
-          {renderToolbar()}
+        {/* used for making icons appear on the left */}
+        <div style={{ display: 'flex', flex: 1 }}/>
 
-          {/* used for making icons appear on the left */}
-          <div style={{ display: 'flex', flex: 1 }}/>
+        {matchesDesktop && (
+          <>
+            {/* Close button */}
+            <Button
+              autoFocus
+              onClick={handleClose}
+              color="inherit"
+            >
+              {t('dialog.close')}
+            </Button>
 
-          {/* Close button */}
-          <Button
-            autoFocus
-            onClick={handleCancel}
-            color="inherit"
-          >
-            {t('dialog.close')}
-          </Button>
+            {/* Save button */}
+            {renderSaveButton()}
+          </>
+        )}
 
-        </DialogActions>
-      )}
+      </DialogActions>
 
       <Menu
         anchorEl={colorMenuAnchorEl}
