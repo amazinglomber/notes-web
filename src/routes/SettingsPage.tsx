@@ -33,9 +33,7 @@ const SettingsPage = () => {
   };
 
   return (
-    <PageContainer>
-      <Typography variant="h4" color="primary">{t('nav.settings')}</Typography>
-      <br />
+    <PageContainer title={t('nav.settings')}>
       <Card>
         <CardContent>
 

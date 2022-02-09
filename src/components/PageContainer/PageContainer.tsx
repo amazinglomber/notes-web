@@ -26,7 +26,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ title, children }) => {
       {(!!title && matchesDesktop) && (
         <Typography
           variant="h4"
-          color="primary"
+          color="inherit"
           sx={{ mb: 4 }}
         >
           {title}
