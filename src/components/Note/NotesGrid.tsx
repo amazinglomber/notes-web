@@ -22,16 +22,19 @@ const NotesGrid: React.FC<CardGridProps> = ({ notes }) => {
           xs: 1,
           sm: 2,
         },
-        py: 1,
-        mt: -1,
+        pb: 1,
+        // Hack to fix shadow being cropped on sides.
+        mx: '2px',
       }}
     >
-      {notes.map((note) => (
-        <NoteCard
-          key={`${note.isArchived ? 'archived-' : ''}note-list-item-${note.id}`}
-          note={note}
-        />
-      ))}
+      <Box>
+        {notes.map((note) => (
+          <NoteCard
+            key={`${note.isArchived ? 'archived-' : ''}note-list-item-${note.id}`}
+            note={note}
+          />
+        ))}
+      </Box>
     </Box>
   );
 };

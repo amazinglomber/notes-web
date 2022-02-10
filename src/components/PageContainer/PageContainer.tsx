@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Box, styled, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import useMatchesDesktop from '../../hooks/useMatchesDesktop';
 
 export interface PageContainerProps {

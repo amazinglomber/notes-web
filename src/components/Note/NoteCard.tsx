@@ -1,4 +1,4 @@
-import { CardContent, CardProps, Typography, Card, CardActionArea, ImageListItem } from '@mui/material';
+import { Card, CardActionArea, CardContent, CardProps, Typography } from '@mui/material';
 import React, { useState } from 'react'
 import NoteFormDialog from '../Dialogs/NoteFormDialog';
 import { NoteColors } from '../../theme';
@@ -21,7 +21,8 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, ...params }) => {
         mb: {
           xs: 1,
           sm: 2,
-        }
+        },
+        transform: 'translateZ(0)',
       }}
       {...params}
     >
