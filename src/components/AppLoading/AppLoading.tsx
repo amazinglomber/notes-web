@@ -3,9 +3,11 @@ import Loading from '../Loading';
 import { Box } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 
-export interface AppLoadingProps {}
+export interface AppLoadingProps {
+  withLogo?: boolean;
+}
 
-const AppLoading: React.FC<AppLoadingProps> = () => {
+const AppLoading: React.FC<AppLoadingProps> = ({ withLogo = false }) => {
   return (
     <Box
       style={{
@@ -16,7 +18,7 @@ const AppLoading: React.FC<AppLoadingProps> = () => {
         justifyContent: 'center',
       }}
     >
-      <DescriptionIcon sx={{ fontSize: 60 }} />
+      {withLogo && <DescriptionIcon sx={{ fontSize: 60 }} />}
       <Loading />
     </Box>
   );
