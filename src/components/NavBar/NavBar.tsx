@@ -1,8 +1,8 @@
 import React from 'react';
-import { AppBar, Toolbar, IconButton, useMediaQuery, styled, Theme, Typography } from '@mui/material';
+import { AppBar, Toolbar, IconButton, styled, Theme, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { selectNavBarTitle } from '../../store/selectors';
+import { selectNavBarTitle } from '../../store/selectors/appSelectors';
 import { appSlice } from '../../store/reducers/appReducer';
 import useMatchesDesktop from '../../hooks/useMatchesDesktop';
 import { useTranslation } from 'react-i18next';

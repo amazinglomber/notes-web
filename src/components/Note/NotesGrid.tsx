@@ -1,7 +1,5 @@
 import React from 'react';
-import useMatchesDesktop from '../../hooks/useMatchesDesktop';
 import NoteCard from './NoteCard';
-import useNotesTheme from '../../context/themeHooks';
 import { Box } from '@mui/material';
 
 export interface CardGridProps {
@@ -9,8 +7,6 @@ export interface CardGridProps {
 }
 
 const NotesGrid: React.FC<CardGridProps> = ({ notes }) => {
-  const { theme } = useNotesTheme();
-
   return (
     <Box
       sx={{
@@ -22,19 +18,18 @@ const NotesGrid: React.FC<CardGridProps> = ({ notes }) => {
           xs: 1,
           sm: 2,
         },
+        pt: 2,
         pb: 1,
-        // Hack to fix shadow being cropped on sides.
-        mx: '2px',
+        px: 8,
+        overflow: 'visible'
       }}
     >
-      <Box>
-        {notes.map((note) => (
-          <NoteCard
-            key={`${note.isArchived ? 'archived-' : ''}note-list-item-${note.id}`}
-            note={note}
-          />
-        ))}
-      </Box>
+      {notes.map((note) => (
+        <NoteCard
+          key={`${note.isArchived ? 'archived-' : ''}note-list-item-${note.id}`}
+          note={note}
+        />
+      ))}
     </Box>
   );
 };

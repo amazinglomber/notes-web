@@ -1,6 +1,5 @@
 import { Archive, Settings } from '@mui/icons-material';
 import {
-  Button,
   Divider,
   Drawer,
   Fab,
@@ -19,7 +18,7 @@ import NoteFormDialog from '../Dialogs/NoteFormDialog';
 import DescriptionIcon from '@mui/icons-material/Description';
 import EditIcon from '@mui/icons-material/Edit';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { selectNavigationDrawerOpened } from '../../store/selectors';
+import { selectNavigationDrawerOpened } from '../../store/selectors/appSelectors';
 import { appSlice } from '../../store/reducers/appReducer';
 import useMatchesDesktop from '../../hooks/useMatchesDesktop';
 import LogoutIcon from '@mui/icons-material/Logout';

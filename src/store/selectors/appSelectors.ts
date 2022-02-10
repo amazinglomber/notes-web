@@ -1,4 +1,4 @@
-import { RootState } from './hooks';
+import { RootState } from '../hooks';
 
 export const selectNavigationDrawerOpened = (state: RootState) =>
   state.app.navigationDrawerOpened;
