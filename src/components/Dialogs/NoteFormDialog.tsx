@@ -6,7 +6,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogProps, IconButton, Menu, Stack, Toolbar, Tooltip,
+  DialogProps, IconButton, Menu, Stack, Theme, Toolbar, Tooltip,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
@@ -31,6 +31,8 @@ export interface NoteFormDialogProps extends DialogProps {
   onClose: () => void;
   note? :INote;
 }
+
+const bgClr = (color: string, theme: Theme) => `note${color}.${theme.palette.mode}`
 
 const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ...props }) => {
   const { t } = useTranslation();
@@ -255,10 +257,10 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
     !matchesDesktop && (
       <AppBar
         elevation={0}
-        sx={{
+        sx={(theme) => ({
           position: 'relative',
-          bgcolor: NoteColors[color],
-        }}
+          bgcolor: bgClr(color, theme),
+        })}
       >
         <Toolbar disableGutters sx={{ marginX: 1 }}>
           <BackButton onClick={onClose} />
@@ -285,18 +287,18 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
       {renderAppBarOnMobile()}
 
       <DialogContent
-        sx={{
+        sx={(theme) => ({
           padding: 2,
-          bgcolor: NoteColors[color],
-        }}
+          bgcolor: bgClr(color, theme),
+        })}
       >
         <NoteForm note={note} onChange={handleOnNoteChange} />
       </DialogContent>
 
       <DialogActions
-        sx={{
-          bgcolor: NoteColors[color],
-        }}
+        sx={(theme) => ({
+          bgcolor: bgClr(color, theme),
+        })}
       >
         {renderToolbar()}
 
@@ -341,10 +343,10 @@ const NoteFormDialog: React.FC<NoteFormDialogProps> = ({ note, open, onClose, ..
               onClick={handleColor(key as NoteColor)}
             >
               <CircleIcon
-                sx={{
-                  color: value,
+                sx={(theme) => ({
+                  color: `note${key}.${theme.palette.mode}`,
                   fontSize: 40,
-                }}
+                })}
               />
             </IconButton>
           ))}

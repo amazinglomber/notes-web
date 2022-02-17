@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardContent, CardProps, IconButton, Typography } from '@mui/material';
+import { Card, CardActionArea, CardContent, CardProps, darken, IconButton, Typography } from '@mui/material';
 import React, { useState } from 'react'
 import NoteFormDialog from '../Dialogs/NoteFormDialog';
 import { NoteColors } from '../../theme';
@@ -27,13 +27,15 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, ...params }) => {
   return (
     <Card
       sx={[
+        (theme) => ({
+          bgcolor: `note${note.color}.${theme.palette.mode}`,
+        }),
         {
-          bgcolor: NoteColors[note.color],
           mb: {
             xs: 1,
             sm: 2,
           },
-          // Hack to fix shadow being cropped on sides.
+          // Hack to fix shadow being cropped on sides in chrome.
           transform: 'translateZ(0)',
           overflow: 'visible',
 
@@ -50,40 +52,40 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, ...params }) => {
       ]}
       {...params}
     >
-      <IconButton
-        className="selectNoteButton"
-        sx={{
-          position: 'absolute',
-          ml: '-16px',
-          mt: '-16px',
-          // ml: '-10px',
-          // mt: '-10px',
-          zIndex: 2137,
-          opacity: !isSelected ? 0 : 1,
-          transition: 'opacity 0.218s linear',
-        }}
-        onClick={handleSelect}
-      >
-        <CheckCircleIcon
-          sx={[
-            {
-              backgroundPosition: 'center',
-              backgroundSize: '8px 8px',
-              borderRadius: '50%',
-              // color: 'black',
-              // fill: 'pink',
-            },
-            (theme) => isSelected ? {
-              backgroundColor: theme.palette.mode === 'light'
-                ? theme.palette.common.white
-                : theme.palette.common.black,
-              color: theme.palette.mode === 'light'
-                ? theme.palette.common.black
-                : theme.palette.common.white,
-            } : {},
-          ]}
-        />
-      </IconButton>
+      {/*<IconButton*/}
+      {/*  className="selectNoteButton"*/}
+      {/*  sx={{*/}
+      {/*    position: 'absolute',*/}
+      {/*    ml: '-16px',*/}
+      {/*    mt: '-16px',*/}
+      {/*    // ml: '-10px',*/}
+      {/*    // mt: '-10px',*/}
+      {/*    zIndex: 2137,*/}
+      {/*    opacity: !isSelected ? 0 : 1,*/}
+      {/*    transition: 'opacity 0.218s linear',*/}
+      {/*  }}*/}
+      {/*  onClick={handleSelect}*/}
+      {/*>*/}
+      {/*  <CheckCircleIcon*/}
+      {/*    sx={[*/}
+      {/*      {*/}
+      {/*        backgroundPosition: 'center',*/}
+      {/*        backgroundSize: '8px 8px',*/}
+      {/*        borderRadius: '50%',*/}
+      {/*        // color: 'black',*/}
+      {/*        // fill: 'pink',*/}
+      {/*      },*/}
+      {/*      (theme) => isSelected ? {*/}
+      {/*        backgroundColor: theme.palette.mode === 'light'*/}
+      {/*          ? theme.palette.common.white*/}
+      {/*          : theme.palette.common.black,*/}
+      {/*        color: theme.palette.mode === 'light'*/}
+      {/*          ? theme.palette.common.black*/}
+      {/*          : theme.palette.common.white,*/}
+      {/*      } : {},*/}
+      {/*    ]}*/}
+      {/*  />*/}
+      {/*</IconButton>*/}
       <CardActionArea
         onClick={handleOnNoteClick}
         sx={{
